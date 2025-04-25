@@ -1,0 +1,39 @@
+.titleHeader {
+    font-size: 19px;
+    font-family: var(--font-base);
+    line-height: 22px;
+    font-weight: 400;
+    color: #212b25;
+    text-transform: uppercase;
+    margin-bottom: 27px;
+}
+.dashBoard {
+    padding-left: 10px;
+    padding-right: 10px;
+    max-width: 100%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+}
+table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 16px;
+    background-color: transparent;
+    font-size: 15px;
+    thead {
+        th {
+            border-bottom: 1px solid #dee2e6;
+            background: var(--hover);
+            color: #fff;
+            padding: 5px;
+            vertical-align: bottom;
+            border-top: 1px solid #dee2e6;
+        }
+    }
+    td {
+        padding: 12px;
+        vertical-align: top;
+        border-top: 1px solid #dee2e6;
+    }
+}

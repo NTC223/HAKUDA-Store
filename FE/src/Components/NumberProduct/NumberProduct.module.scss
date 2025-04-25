@@ -1,0 +1,39 @@
+.numberProduct {
+    position: relative;
+    button {
+        width: 30px;
+        height: 30px;
+        border: thin solid #ebebeb;
+        background-color: #fff;
+        font-size: 14px;
+        color: #ee4f83;
+        padding: 0;
+        font-weight: 400;
+        float: left;
+        border-radius: 0;
+        line-height: 22px;
+        margin-left: 0px;
+    }
+    input {
+        float: left;
+        width: 40px;
+        height: 30px;
+        border: solid thin #ebebeb;
+        border-radius: 0;
+        color: #333f48;
+        padding: 0;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+        min-height: unset;
+        line-height: 30px;
+        margin: 0;
+        border-left: none;
+        border-right: none;
+    }
+}
+.numberProduct::after {
+    display: block;
+    clear: both;
+    content: '';
+}

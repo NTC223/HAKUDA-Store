@@ -1,0 +1,48 @@
+.itemBlog {
+    display: flex;
+    flex-flow: column;
+    background: #fff;
+    margin-bottom: 30px;
+    > a {
+        width: 100%;
+        display: block;
+        position: relative;
+        overflow: hidden;
+        img {
+            border-radius: 7px;
+        }
+    }
+    h3 {
+        white-space: nowrap;
+        height: unset;
+        margin-top: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 0;
+        display: block;
+        font-size: 14px;
+        font-family: var(--font-base);
+        margin: 10px 0 0;
+        line-height: 1.4;
+        font-weight: bold;
+        a {
+            color: var(--main-color);
+        }
+        a:hover {
+            color: var(--hover);
+        }
+    }
+    span {
+        display: inline-flex;
+        font-size: 14px;
+        color: #838383;
+        margin-bottom: 0;
+    }
+    p {
+        font-size: 14px;
+        color: #838383;
+        margin-bottom: 0;
+        max-height: 42px;
+        overflow: hidden;
+    }
+}

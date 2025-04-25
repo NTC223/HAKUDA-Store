@@ -1,0 +1,52 @@
+.container {
+    max-width: 1400px;
+    padding: 0 10px;
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+}
+.row {
+    margin-right: -10px;
+    margin-left: -10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.filterOptions {
+    float: right;
+    margin-bottom: 20px;
+    button {
+        margin-left: 10px;
+        color: var(--main-color);
+        background-color: #fff;
+        border: 1;
+    }
+}
+
+.col {
+    padding-left: 10px;
+    padding-right: 10px;
+    flex: 0 0 100%;
+    max-width: 100%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+}
+
+.blockTitle {
+    background: #fff;
+    padding: 10px 0;
+    justify-content: space-between;
+    border-bottom: solid 2px var(--menu);
+    margin-bottom: 10px;
+}
+
+.titleModule {
+    font-family: var(--font-title);
+    font-size: 24px;
+    line-height: 35px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--main-color);
+    margin: 0;
+}

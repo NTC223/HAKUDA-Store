@@ -1,0 +1,226 @@
+.container {
+    max-width: 1400px;
+    padding: 0 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.sectionSlideBanner {
+    display: flex;
+    padding-top: 10px;
+}
+
+.slideWithButton {
+    position: relative;
+    .swiperBtnPrev {
+        opacity: 0.7;
+        left: 0;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    .swiperBtnNext {
+        right: 0;
+        visibility: visible;
+        opacity: 0.7;
+        transform: translateY(0);
+    }
+}
+
+section {
+    margin-bottom: 30px;
+    .newsBox {
+        margin-top: 20;
+    }
+}
+
+.swiperContainer {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    z-index: 1;
+}
+
+.swiperWrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    transition-property: transform;
+    box-sizing: content-box;
+    transform: translate3d(0px, 0px, 0px);
+}
+
+.swiperBtnPrev,
+.swiperBtnNext {
+    z-index: 33;
+    width: 30px;
+    height: 30px;
+    box-shadow: 0 1px 12px 0 rgba(0, 0, 0, 0.12);
+    background-blend-mode: difference;
+    border-radius: 4px;
+    background: #fff;
+    margin-left: 10px;
+    margin-right: 10px;
+    position: absolute;
+    top: 50%;
+    margin-top: calc(-1 * var(--swiper-navigation-size) / 2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--swiper-navigation-color, var(--swiper-theme-color));
+}
+
+.sectionCategory {
+    margin-bottom: 30px;
+    .cateList {
+        position: relative;
+    }
+    .cateItem {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        .image {
+            display: flex;
+            height: 80px;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            margin: 0 auto 5px;
+            border-radius: 80px;
+            overflow: hidden;
+            background: #f4f4f4;
+            border: solid 2px var(--main-color);
+            img {
+                max-width: 100%;
+                max-height: 100%;
+                transition: all 0.5s;
+                display: block;
+            }
+        }
+        h4 {
+            font-size: 15px;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+            white-space: normal;
+            height: 38px;
+            overflow: hidden;
+            text-align: center;
+            line-height: 19px;
+            padding: 0 10px;
+        }
+    }
+    .cateItem:hover {
+        .image {
+            img {
+                transform: rotate(45deg);
+                height: auto;
+            }
+        }
+    }
+}
+
+.swiperSlide {
+    flex-shrink: 0;
+    height: 100%;
+    position: relative;
+    transition-property: transform;
+}
+
+.row {
+    margin-left: -10px;
+    margin-right: -10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.banner {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.newSale {
+    h2 {
+        margin-right: 10px;
+        display: inline-block;
+    }
+}
+
+.newSaleList {
+    padding-left: 10px;
+    padding-right: 10px;
+    float: 0 0 75%;
+    max-width: 75%;
+}
+.title {
+    font-family: var(--font-title);
+    font-size: 24px;
+    line-height: 35px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--main-color);
+    margin: 0;
+    a {
+        color: var(--main-color);
+    }
+}
+
+.productList {
+    margin-top: 20px;
+    position: relative;
+    display: flex;
+}
+
+.lefCol {
+    padding-left: 10px;
+    padding-right: 10px;
+    -webkit-box-flex: 0;
+    flex: 0 0 25%;
+    max-width: 25%;
+}
+
+.rightCol {
+    padding-left: 10px;
+    padding-right: 10px;
+    -webkit-box-flex: 0;
+    flex: 0 0 75%;
+    max-width: 75%;
+}
+
+.box {
+    padding-left: 10px;
+    padding-right: 10px;
+    -webkit-box-flex: 0;
+    flex: 0 0 50%;
+    max-width: 50%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+}
+.item {
+    display: flex;
+    border: 0;
+    border: dashed 1px transparent;
+    text-align: center;
+    align-items: center;
+    background: #fff;
+    transition: all 0.5s;
+    margin-top: 0px;
+    min-height: 70px;
+    h4 {
+        width: calc(100% - 45px);
+        padding-left: 10px;
+        text-align: left;
+        font-size: 16px;
+        font-weight: bold;
+        display: block;
+        color: var(--text-color);
+        margin: 0 0 5px;
+    }
+}

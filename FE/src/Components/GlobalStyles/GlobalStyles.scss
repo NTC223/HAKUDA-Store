@@ -1,0 +1,114 @@
+@import 'normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --mauNenKhungTieuDe: #fff0f0;
+    --mauChuKhungTieuDe: #212b35;
+    --mauNenKhung: #fff0f0;
+    --mauChuDanhSachSanPham: #212b35;
+    --mauIconCheckbox: #ff4d4d;
+    --mauDuongKePhanBiet: #dfe4e8;
+    --mauChuXemThem: #ff4d4d;
+    --mauGiaGocSanPham: #a6aaae;
+    --mauGiaGiamGia: #ff4d4d;
+    --mauNenKhungPhienBanVaSoLuongMua: #fff;
+    --mauChuKhungPhienBanVaSoLuongMua: #596068;
+    --mauNenLabel: #ffe5e5;
+    --mauChuLabel: #ff4d4d;
+    --mauNenKhungDuoiCung: #fff0f0;
+    --mauChuTongTien: #212b35;
+    --mauChuTongGiamGia: #ff4d4d;
+    --mauNenNutThemGioHang: #ff4d4d;
+    --mauChuNutThemGioHang: #ffffff;
+    --main-color: #151614;
+    --font-base: 'Montserrat', sans-serif;
+    --font-title: 'Montserrat', sans-serif;
+    --hover: #a3a3a3;
+    --text-color: #000000;
+    --price: #fd0000;
+    --menu: #ffffff;
+    --deal-color: #ff9473;
+    --bg-deal: #f91111;
+    --number-deal: #ffffff;
+    --line-deal: #f91111;
+    --bgcopoun: #ffeef2;
+    --bg-sup: #f3faff;
+    --swiper-navigation-size: 44px;
+    --swiper-theme-color: #007aff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style: none outside;
+}
+
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+    unicode-bidi: isolate;
+}
+
+img {
+    max-width: 100%;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    box-sizing: content-box;
+    height: 0;
+    overflow: visible;
+}
+
+input {
+    height: 40px;
+    border-radius: 4px;
+    line-height: 40px;
+    margin-bottom: 10px;
+    float: left;
+    width: 100%;
+    float: left;
+    padding: 0 20px 0 20px;
+    background: #fff;
+    border-color: #ebebeb;
+    font-size: 15px;
+    color: #9e9e9e;
+    box-shadow: none;
+}
+
+button {
+    font-size: 15px;
+    overflow: visible;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif !important;
+    font-weight: 520;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+    background-color: #fff;
+}

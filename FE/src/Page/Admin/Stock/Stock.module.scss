@@ -1,0 +1,72 @@
+.content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+    .title {
+        font-size: 18px;
+    }
+}
+
+.filterOptions {
+    float: right;
+    margin: 10px 0;
+    button {
+        margin-left: 10px;
+        color: var(--main-color);
+        background-color: #fff;
+        border: 1;
+    }
+}
+
+.dashBoard {
+    padding-left: 10px;
+    padding-right: 10px;
+    max-width: 100%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+}
+table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 16px;
+    background-color: transparent;
+    font-size: 14px;
+    thead {
+        th {
+            border-bottom: 1px solid #dee2e6;
+            background: var(--hover);
+            color: #fff;
+            padding: 10px;
+            vertical-align: bottom;
+            border-top: 1px solid #dee2e6;
+            input {
+                height: 20px;
+                margin: 0;
+                padding: 0;
+            }
+        }
+    }
+    td {
+        padding: 12px;
+        vertical-align: top;
+        border-top: 1px solid #dee2e6;
+        input {
+            height: 20px;
+            margin: 0;
+            padding: 0;
+        }
+    }
+}
+
+.rightCol {
+    padding-left: 10px;
+    padding-right: 10px;
+    flex: 0 0 75%;
+    max-width: 75%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+}

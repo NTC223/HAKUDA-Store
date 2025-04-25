@@ -1,0 +1,83 @@
+.pageCustomerAccount {
+    margin-bottom: 30px;
+    padding: 20px 0;
+}
+
+.container {
+    max-width: 1400px;
+    padding: 0 10px;
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+}
+.row {
+    margin-right: -10px;
+    margin-left: -10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.lefCol {
+    padding-left: 10px;
+    padding-right: 10px;
+    flex: 0 0 25%;
+    max-width: 25%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    .blockAccount {
+        .titleAccount {
+            font-family: var(--font-base);
+            font-size: 19px;
+            font-weight: 400;
+            color: #212b25;
+            margin-bottom: 7px;
+            text-transform: uppercase;
+        }
+        p {
+            font-weight: 700;
+            font-size: 14px;
+            font-family: var(--font-base);
+            line-height: 16px;
+            margin-bottom: 28px;
+            color: #212b25;
+            position: relative;
+        }
+        ul {
+            li,
+            a {
+                font-weight: 400;
+                font-size: 14px;
+                font-family: var(--font-base);
+                color: #212b25;
+                margin-bottom: 22px;
+                display: block;
+            }
+            li:hover,
+            li:hover a {
+                color: var(--hover);
+            }
+            .active {
+                color: var(--hover);
+            }
+        }
+    }
+}
+
+.rightCol {
+    padding-left: 10px;
+    padding-right: 10px;
+    flex: 0 0 75%;
+    max-width: 75%;
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    .titleHeader {
+        font-size: 19px;
+        font-family: var(--font-base);
+        line-height: 22px;
+        font-weight: 400;
+        color: #212b25;
+        text-transform: uppercase;
+        margin-bottom: 27px;
+    }
+}

@@ -1,0 +1,21 @@
+.content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+    .title {
+        font-size: 18px;
+    }
+}
+
+.filterOptions {
+    float: right;
+    margin: 10px 0;
+    button {
+        margin-left: 10px;
+        color: var(--main-color);
+        background-color: #fff;
+        border: 1;
+    }
+}
