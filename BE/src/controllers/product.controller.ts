@@ -10,16 +10,17 @@ export const addController = async (req: Request, res: Response) => {
     return
 }
 
-export const getProductsController = async (req: Request, res: Response) => {
-    const page = Number(req.query.page) || 1
-    const pageSize = Number(req.query.pageSize) || 10
-    const result = await productService.getProducts(page, pageSize)
-    res.json({
-        message: 'Products fetched successfully',
-        result
-    })
-    return
-}
+//gộp
+// export const getProductsController = async (req: Request, res: Response) => {
+//     const page = Number(req.query.page) || 1
+//     const pageSize = Number(req.query.pageSize) || 10
+//     const result = await productService.getProducts(page, pageSize)
+//     res.json({
+//         message: 'Products fetched successfully',
+//         result
+//     })
+//     return
+// }
 
 export const getProductByIdController = async (req: Request, res: Response) => {
     const { product_id } = req.params
@@ -31,17 +32,18 @@ export const getProductByIdController = async (req: Request, res: Response) => {
     return
 }
 
-export const searchProductController = async (req: Request, res: Response) => {
-    const { query } = req.body
-    const page = Number(req.query.page) || 1
-    const pageSize = Number(req.query.pageSize) || 10
-    const result = await productService.searchProduct(query, page, pageSize)
-    res.json({
-        message: 'Product fetched successfully',
-        result
-    })
-    return
-}
+//gộp
+// export const searchProductController = async (req: Request, res: Response) => {
+//     const { query } = req.body
+//     const page = Number(req.query.page) || 1
+//     const pageSize = Number(req.query.pageSize) || 10
+//     const result = await productService.searchProduct(query, page, pageSize)
+//     res.json({
+//         message: 'Product fetched successfully',
+//         result
+//     })
+//     return
+// }
 
 export const deleteProductController = async (req: Request, res: Response) => {
     const { product_id } = req.params
@@ -58,6 +60,22 @@ export const updateProductController = async (req: Request, res: Response) => {
     const result = await productService.updateProduct(product_id, req.body)
     res.json({
         message: 'Product updated successfully',
+        result
+    })
+    return
+}
+
+export const getProductsWithSearchAndSortController = async (req: Request, res: Response) => {
+    const { query = '', page = 1, pageSize = 10, sortBy = 'name', sortOrder = 'asc' } = req.query
+    const result = await productService.getProductsWithSearchAndSort(
+        query as string,
+        Number(page),
+        Number(pageSize),
+        sortBy as string,
+        sortOrder as 'asc' | 'desc'
+    )
+    res.json({
+        message: 'Products fetched successfully',
         result
     })
     return

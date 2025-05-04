@@ -3,8 +3,7 @@ import {
     addController,
     deleteProductController,
     getProductByIdController,
-    getProductsController,
-    searchProductController,
+    getProductsWithSearchAndSortController,
     updateProductController
 } from '~/controllers/product.controller'
 import { accessTokenValidator, authorizeadmin, refreshTokenValidator } from '~/middlewares/auth.middlewares'
@@ -14,12 +13,18 @@ import { wrapRequestHandler } from '~/utils/handlers'
 const productsRouter = Router()
 
 /**
- * Description: Get all products
- * Path: /all-products
+ * Description: Get all products with search and sort
+ * Path: /products
  * Method: GET
- * Query: { page: number, pageSize: number }
+ * Query: {
+ *   query: string (optional),
+ *   page: number (optional, default: 1),
+ *   pageSize: number (optional, default: 10),
+ *   sortBy: string (optional, default: 'name'),
+ *   sortOrder: 'asc' | 'desc' (optional, default: 'asc')
+ * }
  */
-productsRouter.get('/all-products', wrapRequestHandler(getProductsController))
+productsRouter.get('/products', wrapRequestHandler(getProductsWithSearchAndSortController))
 
 /**
  * Description: Get product by id
@@ -27,15 +32,6 @@ productsRouter.get('/all-products', wrapRequestHandler(getProductsController))
  * Method: GET
  */
 productsRouter.get('/:product_id', wrapRequestHandler(getProductByIdController))
-
-/**
- * Description: Search product
- * Path: /search
- * Method: POST
- * Body: { query: string }
- * Query: { page: number, pageSize: number }
- */
-productsRouter.post('/search', wrapRequestHandler(searchProductController))
 
 /**
  * Description: Add product (Admin)

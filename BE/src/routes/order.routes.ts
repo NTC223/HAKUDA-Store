@@ -39,12 +39,7 @@ orderRouter.get('/order-list/:user_id', accessTokenValidator, wrapRequestHandler
  * Path: /order-list/:order_id
  * Method: PUT
  */
-orderRouter.put(
-    '/order-list/:order_id',
-    accessTokenValidator,
-    authorizeadmin,
-    wrapRequestHandler(updateOrderStatusController)
-)
+orderRouter.put('/:order_id', accessTokenValidator, authorizeadmin, wrapRequestHandler(updateOrderStatusController))
 
 /**
  * Description: Delete order (Admin)

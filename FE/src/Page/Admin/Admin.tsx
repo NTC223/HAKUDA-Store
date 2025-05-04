@@ -20,11 +20,11 @@ export default function AdminPage() {
     const [indexNav, setIndexNav] = useState(0);
 
     const navList = [
-        {
-            name: 'Tổng quan',
-            image: overView,
-            layout: OverView,
-        },
+        // {
+        //     name: 'Tổng quan',
+        //     image: overView,
+        //     layout: OverView,
+        // },
         {
             name: 'Khách hàng',
             image: user,

@@ -50,6 +50,8 @@ class OrderService {
             createdAt: new Date(),
             updatedAt: new Date()
         })
+        // delete cart
+        await databaseService.carts.deleteOne({ user_id: new ObjectId(user_id) })
         return order
     }
 

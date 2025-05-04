@@ -9,48 +9,48 @@ class ProductService {
         return product_id
     }
 
-    async getProducts(page: number = 1, pageSize: number = 10) {
-        const skip = (page - 1) * pageSize
-        const [products, total] = await Promise.all([
-            databaseService.products.find({}).skip(skip).limit(pageSize).toArray(),
-            databaseService.products.countDocuments({})
-        ])
-        return {
-            products,
-            pagination: {
-                page,
-                pageSize,
-                total,
-                totalPages: Math.ceil(total / pageSize)
-            }
-        }
-    }
+    // async getProducts(page: number = 1, pageSize: number = 10) {
+    //     const skip = (page - 1) * pageSize
+    //     const [products, total] = await Promise.all([
+    //         databaseService.products.find({}).skip(skip).limit(pageSize).toArray(),
+    //         databaseService.products.countDocuments({})
+    //     ])
+    //     return {
+    //         products,
+    //         pagination: {
+    //             page,
+    //             pageSize,
+    //             total,
+    //             totalPages: Math.ceil(total / pageSize)
+    //         }
+    //     }
+    // }
 
     async getProductById(product_id: string) {
         const product = await databaseService.products.findOne({ _id: new ObjectId(product_id) })
         return product
     }
 
-    async searchProduct(query: string, page: number = 1, pageSize: number = 10) {
-        const skip = (page - 1) * pageSize
-        const [products, total] = await Promise.all([
-            databaseService.products
-                .find({ $text: { $search: query } })
-                .skip(skip)
-                .limit(pageSize)
-                .toArray(),
-            databaseService.products.countDocuments({ $text: { $search: query } })
-        ])
-        return {
-            products,
-            pagination: {
-                page,
-                pageSize,
-                total,
-                totalPages: Math.ceil(total / pageSize)
-            }
-        }
-    }
+    // async searchProduct(query: string, page: number = 1, pageSize: number = 10) {
+    //     const skip = (page - 1) * pageSize
+    //     const [products, total] = await Promise.all([
+    //         databaseService.products
+    //             .find({ $text: { $search: query } })
+    //             .skip(skip)
+    //             .limit(pageSize)
+    //             .toArray(),
+    //         databaseService.products.countDocuments({ $text: { $search: query } })
+    //     ])
+    //     return {
+    //         products,
+    //         pagination: {
+    //             page,
+    //             pageSize,
+    //             total,
+    //             totalPages: Math.ceil(total / pageSize)
+    //         }
+    //     }
+    // }
 
     async deleteProduct(product_id: string) {
         const result = await databaseService.products.deleteOne({ _id: new ObjectId(product_id) })
@@ -60,6 +60,39 @@ class ProductService {
     async updateProduct(product_id: string, product: Product) {
         const result = await databaseService.products.updateOne({ _id: new ObjectId(product_id) }, { $set: product })
         return result
+    }
+
+    async getProductsWithSearchAndSort(
+        query: string = '',
+        page: number = 1,
+        pageSize: number = 10,
+        sortBy: string = 'name',
+        sortOrder: 'asc' | 'desc' = 'asc'
+    ) {
+        const skip = (page - 1) * pageSize
+        const sortOptions: { [key: string]: 1 | -1 } = {}
+        sortOptions[sortBy] = sortOrder === 'asc' ? 1 : -1
+
+        const searchQuery = query
+            ? {
+                  $text: { $search: query }
+              }
+            : {}
+
+        const [products, total] = await Promise.all([
+            databaseService.products.find(searchQuery).sort(sortOptions).skip(skip).limit(pageSize).toArray(),
+            databaseService.products.countDocuments(searchQuery)
+        ])
+
+        return {
+            products,
+            pagination: {
+                page,
+                pageSize,
+                total,
+                totalPages: Math.ceil(total / pageSize)
+            }
+        }
     }
 }
 

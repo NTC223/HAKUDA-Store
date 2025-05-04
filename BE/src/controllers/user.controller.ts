@@ -14,7 +14,7 @@ export const getUserByIdController = async (req: Request, res: Response) => {
 }
 
 export const updateUserAddressController = async (req: Request, res: Response) => {
-    const user_id = req.params.user_id
+    const user_id = req.decoded_authorization?.user_id as string
     const user = await usersService.updateUserAddress(user_id, req.body)
     res.json({
         message: 'User address updated successfully',

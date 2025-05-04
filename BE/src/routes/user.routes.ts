@@ -43,7 +43,7 @@ userRouter.put('/update-role/:user_id', accessTokenValidator, authorizeadmin, wr
  * Body: { address: { name: string, phone: string, address: string, isDefault: boolean } }
  */
 userRouter.put(
-    '/update-address/:user_id',
+    '/update-address',
     accessTokenValidator,
     updAddressValidator,
     wrapRequestHandler(updateUserAddressController)
