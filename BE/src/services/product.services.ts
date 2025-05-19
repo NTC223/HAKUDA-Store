@@ -94,6 +94,15 @@ class ProductService {
             }
         }
     }
+
+    async getRandomProducts(limit: number) {
+        try {
+            const products = await databaseService.products.aggregate([{ $sample: { size: limit } }]).toArray()
+            return products
+        } catch (error) {
+            throw new Error('Error getting random products')
+        }
+    }
 }
 
 const productService = new ProductService()

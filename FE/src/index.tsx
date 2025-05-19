@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import GlobalStyles from './Components/GlobalStyles';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient({
@@ -19,7 +18,6 @@ root.render(
         <GlobalStyles>
             <QueryClientProvider client={queryClient}>
                 <App />
-                <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
         </GlobalStyles>
     </React.StrictMode>,

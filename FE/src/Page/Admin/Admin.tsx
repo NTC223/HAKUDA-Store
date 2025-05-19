@@ -1,20 +1,18 @@
 import React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './Admin.module.scss';
 import Product from './Product';
-import OverView from './OverView';
 import Orders from './Orders';
-import Stock from './Stock';
 
 import logo from '../../Assets/Image/logo.png';
 import searchBtn from '../../Assets/Image/search.png';
-import overView from '../../Assets/Image/file.png';
 import prd from '../../Assets/Image/box.png';
 import orders from '../../Assets/Image/order-delivery.png';
-import stock from '../../Assets/Image/warehouse.png';
 import user from '../../Assets/Image/group.png';
 import Customer from './Customer';
+import axiosInstance from '../../utils/axios';
+import { useAuth } from '../../context/AuthContext';
 
 export default function AdminPage() {
     const [indexNav, setIndexNav] = useState(0);
@@ -26,25 +24,25 @@ export default function AdminPage() {
         //     layout: OverView,
         // },
         {
-            name: 'Khách hàng',
-            image: user,
-            layout: Customer,
-        },
-        {
             name: 'Sản phẩm',
             image: prd,
             layout: Product,
+        },
+        {
+            name: 'Người dùng',
+            image: user,
+            layout: Customer,
         },
         {
             name: 'Danh sách đơn hàng',
             image: orders,
             layout: Orders,
         },
-        {
-            name: 'Tồn kho',
-            image: stock,
-            layout: Stock,
-        },
+        // {
+        //     name: 'Tồn kho',
+        //     image: stock,
+        //     layout: Stock,
+        // },
         {
             name: 'Đăng xuất',
             layout: Product,
@@ -52,6 +50,26 @@ export default function AdminPage() {
     ];
 
     const Layout = navList[indexNav].layout;
+
+    const { checkLoginStatus } = useAuth();
+    const refreshToken = localStorage.getItem('refreshToken') || '';
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        try {
+            const response = await axiosInstance.post('/auth/logout', {
+                refresh_token: refreshToken,
+            });
+            localStorage.setItem('accessToken', '');
+            localStorage.setItem('refreshToken', '');
+            checkLoginStatus();
+            console.log(response.data.result);
+            navigate('/');
+        } catch (error: any) {
+            console.log(error.response.data.errors);
+        }
+    };
 
     return (
         <div>
@@ -93,7 +111,7 @@ export default function AdminPage() {
                                         onClick={() => setIndexNav(index)}
                                     >
                                         {index === navList.length - 1 ? (
-                                            <Link to="/" onClick={() => localStorage.setItem('isLoggedIn', '')}>
+                                            <Link to="/" onClick={handleSubmit}>
                                                 {item.name}
                                             </Link>
                                         ) : (

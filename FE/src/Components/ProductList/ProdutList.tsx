@@ -1,126 +1,30 @@
 import React, { useEffect } from 'react';
 import ProductItem from '../ProductItem';
 
-import prdImage from '../../Assets/Image/QuanVu/anh1.webp';
-
 interface productListProps {
     startIndex: number;
     endIndex: number;
     onProductCountChange: (count: number) => void;
+    products?: productProps[];
 }
 
 interface productProps {
+    _id: string;
     name: string;
     price: string;
     image: string;
-    path: string;
 }
 
-export default function ProdutList({ startIndex, endIndex, onProductCountChange }: productListProps) {
-    const productList: productProps[] = [
-        {
-            name: 'Mô hình Metal Build MNQ XH09X Xích Thố + Quan Vũ - Mô hình chính hãng Motor Nuclear',
-            price: '14.000.000₫',
-            image: prdImage,
-            path: '/mnqxh09x',
-        },
-        {
-            name: 'Mô hình Metal Build MNQ XH09X Xích Thố + Quan Vũ - Mô hình chính hãng Motor Nuclear',
-            price: '14.000.000₫',
-            image: prdImage,
-            path: '/mnqxh09x',
-        },
-        {
-            name: 'Mô hình Metal Build MNQ XH09X Xích Thố + Quan Vũ - Mô hình chính hãng Motor Nuclear',
-            price: '14.000.000₫',
-            image: prdImage,
-            path: '/mnqxh09x',
-        },
-        {
-            name: 'Mô hình Metal Build MNQ XH09X Xích Thố + Quan Vũ - Mô hình chính hãng Motor Nuclear',
-            price: '14.000.000₫',
-            image: prdImage,
-            path: '/mnqxh09x',
-        },
-        {
-            name: 'Mô hình Metal Build MNQ XH09X Xích Thố + Quan Vũ - Mô hình chính hãng Motor Nuclear',
-            price: '14.000.000₫',
-            image: prdImage,
-            path: '/mnqxh09x',
-        },
-        {
-            name: 'Mô hình Metal Build MNQ XH09X Xích Thố + Quan Vũ - Mô hình chính hãng Motor Nuclear',
-            price: '14.000.000₫',
-            image: prdImage,
-            path: '/mnqxh09x',
-        },
-        {
-            name: 'Mô hình Metal Build MNQ XH09X Xích Thố + Quan Vũ - Mô hình chính hãng Motor Nuclear',
-            price: '14.000.000₫',
-            image: prdImage,
-            path: '/mnqxh09x',
-        },
-        {
-            name: 'Mô hình Metal Build MNQ XH09X Xích Thố + Quan Vũ - Mô hình chính hãng Motor Nuclear',
-            price: '14.000.000₫',
-            image: prdImage,
-            path: '/mnqxh09x',
-        },
-        {
-            name: 'Mô hình Metal Build MNQ XH09X Xích Thố + Quan Vũ - Mô hình chính hãng Motor Nuclear',
-            price: '14.000.000₫',
-            image: prdImage,
-            path: '/mnqxh09x',
-        },
-        {
-            name: 'Mô hình Metal Build MNQ XH09X Xích Thố + Quan Vũ - Mô hình chính hãng Motor Nuclear',
-            price: '14.000.000₫',
-            image: prdImage,
-            path: '/mnqxh09x',
-        },
-        {
-            name: 'Mô hình Metal Build MNQ XH09X Xích Thố + Quan Vũ - Mô hình chính hãng Motor Nuclear',
-            price: '14.000.000₫',
-            image: prdImage,
-            path: '/mnqxh09x',
-        },
-        {
-            name: 'Mô hình Metal Build MNQ XH09X Xích Thố + Quan Vũ - Mô hình chính hãng Motor Nuclear',
-            price: '14.000.000₫',
-            image: prdImage,
-            path: '/mnqxh09x',
-        },
-        {
-            name: 'Mô hình Metal Build MNQ XH09X Xích Thố + Quan Vũ - Mô hình chính hãng Motor Nuclear',
-            price: '14.000.000₫',
-            image: prdImage,
-            path: '/mnqxh09x',
-        },
-        {
-            name: 'Mô hình Metal Build MNQ XH09X Xích Thố + Quan Vũ - Mô hình chính hãng Motor Nuclear',
-            price: '14.000.000₫',
-            image: prdImage,
-            path: '/mnqxh09x',
-        },
-        {
-            name: 'Mô hình Metal Build MNQ XH09X Xích Thố + Quan Vũ - Mô hình chính hãng Motor Nuclear',
-            price: '14.000.000₫',
-            image: prdImage,
-            path: '/mnqxh09x',
-        },
-        {
-            name: 'Mô hình Metal Build MNQ XH09X Xích Thố + Quan Vũ - Mô hình chính hãng Motor Nuclear',
-            price: '14.000.000₫',
-            image: prdImage,
-            path: '/mnqxh09x',
-        },
-    ];
-
+export default function ProdutList({ startIndex, endIndex, onProductCountChange, products }: productListProps) {
     useEffect(() => {
-        onProductCountChange(productList.length);
-    }, [productList.length, onProductCountChange]);
+        onProductCountChange(products?.length || 0);
+    }, [products?.length, onProductCountChange]);
 
-    const currentProducts = productList.slice(startIndex, Math.min(endIndex, productList.length));
+    if (!products || products.length === 0) {
+        return <div>Không có sản phẩm nào</div>;
+    }
+
+    const currentProducts = products.slice(startIndex, Math.min(endIndex, products.length));
 
     return (
         <div
@@ -131,9 +35,15 @@ export default function ProdutList({ startIndex, endIndex, onProductCountChange 
                 flexWrap: 'wrap',
             }}
         >
-            {currentProducts.map((item, index) => {
-                return <ProductItem {...item} key={index} />;
-            })}
+            {currentProducts.map((item) => (
+                <ProductItem
+                    key={item._id}
+                    name={item.name}
+                    price={item.price}
+                    image={item.image}
+                    path={`/product/${item._id}`}
+                />
+            ))}
         </div>
     );
 }

@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './AddProduct.module.scss';
 import axiosInstance from '../../../utils/axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-interface AddProductProps {
+interface EditProductProps {
     onCancel: () => void;
+    productId: string;
 }
 
-export default function AddProduct({ onCancel }: AddProductProps) {
+export default function EditProduct({ onCancel, productId }: EditProductProps) {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [description, setDescription] = useState('');
@@ -19,6 +20,29 @@ export default function AddProduct({ onCancel }: AddProductProps) {
     const [previewUrl, setPreviewUrl] = useState<string>('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [maker, setMaker] = useState('');
+    const [currentImage, setCurrentImage] = useState('');
+
+    useEffect(() => {
+        // Lấy thông tin sản phẩm khi component được mount
+        const fetchProduct = async () => {
+            try {
+                const response = await axiosInstance.get(`/products/${productId}`);
+                const product = response.data.result;
+                setName(product.name);
+                setPrice(product.price.toString());
+                setDescription(product.description);
+                setCountInStock(product.count_in_stock.toString());
+                setCategory(product.category);
+                setMaker(product.maker);
+                setCurrentImage(product.image);
+                setPreviewUrl(product.image);
+            } catch (error) {
+                console.error('Error fetching product:', error);
+                toast.error('Không thể tải thông tin sản phẩm');
+            }
+        };
+        fetchProduct();
+    }, [productId]);
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -49,14 +73,14 @@ export default function AddProduct({ onCancel }: AddProductProps) {
                 formData.append('image', image);
             }
 
-            await axiosInstance.post('/products/add', formData, {
+            await axiosInstance.put(`/products/${productId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
 
             // Hiển thị thông báo thành công
-            toast.success('Thêm sản phẩm thành công!', {
+            toast.success('Cập nhật sản phẩm thành công!', {
                 position: 'top-right',
                 autoClose: 2000,
                 hideProgressBar: false,
@@ -70,11 +94,11 @@ export default function AddProduct({ onCancel }: AddProductProps) {
                 onCancel();
             }, 2000);
         } catch (error: any) {
-            console.error('Error adding product:', error);
+            console.error('Error updating product:', error);
             if (error.response?.data?.errors) {
                 setError(error.response.data.errors);
             } else {
-                setError({ general: { msg: 'Có lỗi xảy ra khi thêm sản phẩm' } });
+                setError({ general: { msg: 'Có lỗi xảy ra khi cập nhật sản phẩm' } });
             }
             // Hiển thị thông báo lỗi
             toast.error('Vui lòng kiểm tra lại thông tin sản phẩm!', {
@@ -93,7 +117,7 @@ export default function AddProduct({ onCancel }: AddProductProps) {
     return (
         <div className={styles.content}>
             <ToastContainer />
-            <div className={styles.title}>Thêm sản phẩm mới</div>
+            <div className={styles.title}>Sửa sản phẩm</div>
             <div className={styles.formContainer}>
                 <form acceptCharset="UTF-8" noValidate onSubmit={handleSubmit}>
                     {error.general && <p className={styles.error}>{error.general.msg}</p>}
@@ -199,7 +223,7 @@ export default function AddProduct({ onCancel }: AddProductProps) {
                         )}
                     </fieldset>
                     <button className={styles.Btn} style={{ marginRight: 10 }} type="submit" disabled={isSubmitting}>
-                        {isSubmitting ? 'Đang thêm...' : 'Thêm sản phẩm'}
+                        {isSubmitting ? 'Đang cập nhật...' : 'Cập nhật sản phẩm'}
                     </button>
                     <button className={styles.Btn} type="button" onClick={onCancel} disabled={isSubmitting}>
                         Hủy

@@ -65,7 +65,9 @@ export const PRODUCTS_MESSAGES = {
     COUNT_IN_STOCK_MUST_BE_NON_NEGATIVE_INTEGER: 'Count in stock must be a non-negative integer',
     CATEGORY_IS_REQUIRED: 'Category is required',
     CATEGORY_MUST_BE_STRING: 'Category must be a string',
-    IS_ACTIVE_MUST_BE_BOOLEAN: 'Is active must be a boolean'
+    IS_ACTIVE_MUST_BE_BOOLEAN: 'Is active must be a boolean',
+    MAKER_IS_REQUIRED: 'Maker is required',
+    MAKER_MUST_BE_STRING: 'Maker must be a string'
 } as const
 
 export const CART_MESSAGES = {

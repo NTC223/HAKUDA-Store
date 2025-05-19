@@ -9,6 +9,7 @@ import MNQXH09X from '../Page/MNQXH09X';
 import EmptyLayout from '../Components/Layout/EmptyLayout/EmptyLayout';
 import Account from '../Page/Account';
 import ProductSearch from '../Page/ProductSearch';
+import ProductDetail from '../Page/ProductDetail/ProductDetail';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Admin from '../Page/Admin';
@@ -22,7 +23,11 @@ interface RouteType {
 }
 
 const PrivateRoute = ({ children, requireAdmin = false }: { children: React.ReactNode; requireAdmin?: boolean }) => {
-    const { isAuthenticated, user } = useAuth();
+    const { isAuthenticated, user, loading } = useAuth();
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     if (!isAuthenticated) {
         return <Navigate to="/login" />;
@@ -45,6 +50,7 @@ const publicRoutes: RouteType[] = [
     { path: '/mnqxh09x', Component: MNQXH09X },
     { path: '/account', Component: Account },
     { path: '/productsearch', Component: ProductSearch },
+    { path: '/product/:id', Component: ProductDetail },
     { path: '/cart', Component: Cart, isPrivate: true },
 ];
 

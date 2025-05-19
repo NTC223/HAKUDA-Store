@@ -8,6 +8,7 @@ import {
 } from '~/controllers/product.controller'
 import { accessTokenValidator, authorizeadmin, refreshTokenValidator } from '~/middlewares/auth.middlewares'
 import { addProductValidator, updateProductValidator } from '~/middlewares/product.middlewares'
+import { uploadMiddleware } from '~/middlewares/upload.middlewares'
 import { wrapRequestHandler } from '~/utils/handlers'
 
 const productsRouter = Router()
@@ -37,12 +38,22 @@ productsRouter.get('/:product_id', wrapRequestHandler(getProductByIdController))
  * Description: Add product (Admin)
  * Path: /add
  * Method: POST
- * Body: { name: string, price: number, description: string, image: string, category: string }
+ * Body: {
+ *   name: string,
+ *   price: number,
+ *   description: string,
+ *   image: File,
+ *   category: string,
+ *   maker: string,
+ *   count_in_stock: number,
+ *   createdAt: Date (auto-generated)
+ * }
  */
 productsRouter.post(
     '/add',
     accessTokenValidator,
     authorizeadmin,
+    uploadMiddleware,
     addProductValidator,
     wrapRequestHandler(addController)
 )
@@ -64,6 +75,7 @@ productsRouter.put(
     '/:product_id',
     accessTokenValidator,
     authorizeadmin,
+    uploadMiddleware,
     updateProductValidator,
     wrapRequestHandler(updateProductController)
 )

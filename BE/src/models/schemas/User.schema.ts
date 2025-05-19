@@ -14,6 +14,7 @@ interface UserType {
     name: string
     email: string
     password: string
+    phone: string
     role?: string
     address?: Address[]
     createdAt?: Date
@@ -28,6 +29,7 @@ class User {
     name: string
     email: string
     password: string
+    phone: string
     role: string
     address: Address[]
     createdAt: Date
@@ -42,6 +44,7 @@ class User {
         this.name = user.name
         this.email = user.email
         this.password = user.password
+        this.phone = user.phone
         this.role = user.role || 'user'
         this.address = user.address || []
         this.createdAt = user.createdAt || date

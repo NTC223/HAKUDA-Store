@@ -25,5 +25,4 @@ class Cart {
         this.updatedAt = cart.updatedAt || new Date()
     }
 }
-
 export default Cart

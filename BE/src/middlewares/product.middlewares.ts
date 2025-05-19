@@ -26,21 +26,21 @@ export const addProductValidator = validate(
                 },
                 toFloat: true
             },
+            maker: {
+                notEmpty: {
+                    errorMessage: PRODUCTS_MESSAGES.MAKER_IS_REQUIRED
+                },
+                isString: {
+                    errorMessage: PRODUCTS_MESSAGES.MAKER_MUST_BE_STRING
+                },
+                trim: true
+            },
             description: {
                 notEmpty: {
                     errorMessage: PRODUCTS_MESSAGES.DESCRIPTION_IS_REQUIRED
                 },
                 isString: {
                     errorMessage: PRODUCTS_MESSAGES.DESCRIPTION_MUST_BE_STRING
-                },
-                trim: true
-            },
-            image: {
-                notEmpty: {
-                    errorMessage: PRODUCTS_MESSAGES.IMAGE_IS_REQUIRED
-                },
-                isString: {
-                    errorMessage: PRODUCTS_MESSAGES.IMAGE_MUST_BE_STRING
                 },
                 trim: true
             },
@@ -62,13 +62,6 @@ export const addProductValidator = validate(
                     errorMessage: PRODUCTS_MESSAGES.CATEGORY_MUST_BE_STRING
                 },
                 trim: true
-            },
-            is_active: {
-                optional: true,
-                isBoolean: {
-                    errorMessage: PRODUCTS_MESSAGES.IS_ACTIVE_MUST_BE_BOOLEAN
-                },
-                toBoolean: true
             }
         },
         ['body']

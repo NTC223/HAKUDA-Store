@@ -55,6 +55,23 @@ export const registerValidator = validate(
                 },
                 trim: true
             },
+            phone: {
+                notEmpty: {
+                    errorMessage: USERS_MESSAGES.PHONE_IS_REQUIRED
+                },
+                isString: {
+                    errorMessage: 'Phone must be a string'
+                },
+                isLength: {
+                    options: { min: 10, max: 11 },
+                    errorMessage: 'Phone length must be from 10 to 11 characters'
+                },
+                matches: {
+                    options: /^[0-9]+$/,
+                    errorMessage: 'Phone must contain only numbers'
+                },
+                trim: true
+            },
             email: {
                 isEmail: {
                     errorMessage: USERS_MESSAGES.EMAIL_IS_INVALID

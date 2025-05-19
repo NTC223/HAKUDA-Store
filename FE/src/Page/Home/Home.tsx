@@ -1,11 +1,11 @@
-import React from 'react';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './Home.module.scss';
 import Navigation from '../../Components/Layout/DefaultLayout/Navigation';
 import HotList from '../../Components/HotList';
 import NewsItem from '../../Components/NewsItem';
 import ProdutList from '../../Components/ProductList';
+import axiosInstance from '../../utils/axios';
 
 import sld1 from '../../Assets/Image/slider/slider_1.jpg';
 import sld2 from '../../Assets/Image/slider/slider_2.jpg';
@@ -39,7 +39,17 @@ interface newsProps {
     des: string;
 }
 
+interface Product {
+    _id: string;
+    name: string;
+    price: number;
+    image: string;
+}
+
 export default function Home() {
+    const [newProducts, setNewProducts] = useState<Product[]>([]);
+    const [topPriceProducts, setTopPriceProducts] = useState<Product[]>([]);
+    const [randomProducts, setRandomProducts] = useState<Product[]>([]);
     const listBanner = [
         {
             src: sld1,
@@ -119,13 +129,85 @@ export default function Home() {
         }
     };
 
-    const newsList: newsProps = {
-        name: 'Cách Lắp Ráp Mô Hình Gundam MG Cho Người Mới: Hướng Dẫn Chi Tiết Từ A-Z',
-        date: '05/03/2025',
-        image: newsImage,
-        path: '/news',
-        des: 'Bạn vừa mua chiếc mô hình Gundam Master Grade (MG) đầu tiên và cảm thấy vừa phấn khích vừa lo lắn...',
+    // const newsList: newsProps = {
+    //     name: 'Cách Lắp Ráp Mô Hình Gundam MG Cho Người Mới: Hướng Dẫn Chi Tiết Từ A-Z',
+    //     date: '05/03/2025',
+    //     image: newsImage,
+    //     path: '/news',
+    //     des: 'Bạn vừa mua chiếc mô hình Gundam Master Grade (MG) đầu tiên và cảm thấy vừa phấn khích vừa lo lắn...',
+    // };
+
+    const navigate = useNavigate();
+
+    const handleCategoryClick = async (path: string) => {
+        try {
+            // Lấy key từ path bằng cách bỏ dấu / ở đầu
+            const searchKey = path.substring(1);
+
+            // Gọi API tìm kiếm sản phẩm
+            const response = await axiosInstance.get('/products/products', {
+                params: {
+                    search: searchKey,
+                    page: 1,
+                    pageSize: 12,
+                },
+            });
+
+            // Chuyển hướng đến trang productsearch với kết quả tìm kiếm
+            navigate(`/productsearch?query=${searchKey}`, {
+                state: {
+                    products: response.data.result.products,
+                    totalProducts: response.data.result.totalProducts,
+                    totalPages: response.data.result.totalPages,
+                },
+            });
+        } catch (error) {
+            console.error('Error searching products:', error);
+        }
     };
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                // Lấy sản phẩm mới nhất
+                const newProductsResponse = await axiosInstance.get('/products/products', {
+                    params: {
+                        page: 1,
+                        pageSize: 4,
+                        sortBy: 'createdAt',
+                        sortOrder: 'desc',
+                    },
+                });
+                setNewProducts(newProductsResponse.data.result.products);
+
+                // Lấy sản phẩm có giá cao nhất
+                const topPriceResponse = await axiosInstance.get('/products/products', {
+                    params: {
+                        page: 1,
+                        pageSize: 4,
+                        sortBy: 'price',
+                        sortOrder: 'asc',
+                    },
+                });
+                setTopPriceProducts(topPriceResponse.data.result.products);
+
+                // Lấy sản phẩm ngẫu nhiên
+                const randomResponse = await axiosInstance.get('/products/products', {
+                    params: {
+                        page: 1,
+                        pageSize: 5,
+                        sortBy: 'random',
+                    },
+                });
+                console.log('Random products response:', randomResponse.data);
+                setRandomProducts(randomResponse.data.result.products);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+            }
+        };
+
+        fetchProducts();
+    }, []);
 
     return (
         <main>
@@ -155,23 +237,25 @@ export default function Home() {
                     <div className={`${styles.cateList} ${styles.alignSpace} ${styles.slideWithButton}`}>
                         <div className={styles.swiperWrapper}>
                             <div className={styles.swiperWrapper} aria-live="polite" style={{ transition: 'all' }}>
-                                {ListCategory.map((item, index) => {
-                                    return (
+                                {ListCategory.map((item, index) => (
+                                    <div
+                                        key={index}
+                                        className={styles.swiperSlide}
+                                        style={{ width: 136.316 }}
+                                        role="group"
+                                        aria-label={`${index + 1} / ${ListCategory.length}`}
+                                    >
                                         <div
-                                            key={index}
-                                            className={styles.swiperSlide}
-                                            style={{ width: 136.316 }}
-                                            role="group"
-                                            aria-label={`${index + 1} / ${ListCategory.length}`}
+                                            className={styles.cateItem}
+                                            style={{ cursor: 'pointer' }}
+                                            onClick={() => handleCategoryClick(item.path)}
                                         >
-                                            <div className={styles.cateItem} style={{ cursor: 'grab' }}>
-                                                <Link to={item.path} className={styles.image}>
-                                                    <img src={item.src} alt="" width={100} height={100} />
-                                                </Link>
+                                            <div className={styles.image}>
+                                                <img src={item.src} alt="" width={100} height={100} />
                                             </div>
                                         </div>
-                                    );
-                                })}
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -196,11 +280,31 @@ export default function Home() {
                             <h2 className={styles.title}>
                                 <Link to="/">SẢN PHẨM MỚI VỀ</Link>
                             </h2>
-                            <ProdutList startIndex={0} endIndex={4} onProductCountChange={() => {}} />
+                            <ProdutList
+                                products={newProducts.map((product) => ({
+                                    _id: product._id,
+                                    name: product.name,
+                                    price: product.price.toLocaleString('vi-VN') + '₫',
+                                    image: product.image,
+                                }))}
+                                startIndex={0}
+                                endIndex={4}
+                                onProductCountChange={() => {}}
+                            />
                             <h2 className={styles.title}>
                                 <Link to="/">SẢN PHẨM BÁN CHẠY</Link>
                             </h2>
-                            <ProdutList startIndex={0} endIndex={4} onProductCountChange={() => {}} />
+                            <ProdutList
+                                products={topPriceProducts.map((product) => ({
+                                    _id: product._id,
+                                    name: product.name,
+                                    price: product.price.toLocaleString('vi-VN') + '₫',
+                                    image: product.image,
+                                }))}
+                                startIndex={0}
+                                endIndex={4}
+                                onProductCountChange={() => {}}
+                            />
                         </div>
                     </div>
                 </div>
@@ -219,7 +323,7 @@ export default function Home() {
                     </div>
                 </div>
             </section>
-            <section className={styles.sectionBlog}>
+            {/* <section className={styles.sectionBlog}>
                 <div className={styles.container}>
                     <div className={styles.row}>
                         <div className={styles.lefCol}>
@@ -240,13 +344,27 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> */}
             <section className={styles.random}>
                 <div className={styles.container}>
                     <h2 className={styles.title}>
                         <Link to="/">Có thể bạn thích</Link>
                     </h2>
-                    <ProdutList startIndex={0} endIndex={5} onProductCountChange={() => {}} />
+                    {randomProducts.length > 0 ? (
+                        <ProdutList
+                            products={randomProducts.map((product) => ({
+                                _id: product._id,
+                                name: product.name,
+                                price: product.price.toLocaleString('vi-VN') + '₫',
+                                image: product.image,
+                            }))}
+                            startIndex={0}
+                            endIndex={5}
+                            onProductCountChange={() => {}}
+                        />
+                    ) : (
+                        <div>Đang tải sản phẩm...</div>
+                    )}
                 </div>
             </section>
             <section className={styles.service}>

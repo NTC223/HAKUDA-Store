@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import styles from './NumberProduct.module.scss'
+import styles from './NumberProduct.module.scss';
 
 export default function NumberProduct() {
     const [numberProduct, setNumberProduct] = useState('1');

@@ -34,7 +34,7 @@ export default function Form({ type }: FormProps) {
             } else {
                 response = await axios.post('http://localhost:5000/auth/register', {
                     name,
-                    phone,
+                    phone: phone.trim(),
                     email,
                     password,
                     confirmPassword,

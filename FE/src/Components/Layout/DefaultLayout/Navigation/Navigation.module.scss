@@ -192,7 +192,7 @@
                                 float: none;
                                 padding: 0 0;
                                 position: relative;
-                                a {
+                                .subLink {
                                     font-weight: 600;
                                     font-size: 14px;
                                     line-height: 24px;
@@ -222,8 +222,35 @@
                                 }
                                 ul {
                                     display: none;
+                                    position: absolute;
                                     left: 220px;
-                                    top: 0px;
+                                    top: 0;
+                                    width: 250px;
+                                    padding: 0;
+                                    background-color: #fff;
+                                    z-index: 99;
+                                    box-shadow: 0 1px 2px 2px rgba(0, 0, 0, 0.04);
+                                    .subSubItem {
+                                        color: var(--text-color);
+                                        float: none;
+                                        padding: 0;
+                                        position: relative;
+                                        border-bottom: solid 1px #e5e6ec;
+                                    }
+                                    .subSubLink {
+                                        font-weight: 600;
+                                        font-size: 14px;
+                                        line-height: 24px;
+                                        display: block;
+                                        padding: 5px 20px 5px 10px;
+                                        color: var(--text-color);
+                                        position: relative;
+                                        text-align: left;
+                                        white-space: normal;
+                                        &:hover {
+                                            color: var(--hover);
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -235,7 +262,7 @@
                         .caretDown::before {
                             transform: rotate(180deg);
                         }
-                        > a {
+                        > .link {
                             color: var(--hover);
                         }
                         .link::after {
@@ -248,17 +275,11 @@
                             max-width: 3000px;
                             display: block;
                             li:hover {
-                                > a {
+                                > .subLink {
                                     color: var(--hover);
                                 }
-                                ul {
+                                > ul {
                                     display: block;
-                                    position: absolute;
-                                    width: 250px;
-                                    padding: 0;
-                                    background-color: #fff;
-                                    z-index: 99;
-                                    box-shadow: 0 1px 2px 2px rgba(0, 0, 0, 0.04);
                                 }
                             }
                         }

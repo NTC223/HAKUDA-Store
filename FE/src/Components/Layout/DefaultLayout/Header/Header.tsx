@@ -4,14 +4,15 @@ import { Link } from 'react-router-dom';
 import GlobalStyles from '../../../GlobalStyles';
 import logo from '../../../../Assets/Image/logo.png';
 import searchBtn from '../../../../Assets/Image/search.png';
-import heart from '../../../../Assets/Image/heart.png';
 import bag from '../../../../Assets/Image/bag.png';
 import axiosInstance from '../../../../utils/axios';
 import { useAuth } from '../../../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Header() {
     const { isAuthenticated, checkLoginStatus } = useAuth();
     const refreshToken = localStorage.getItem('refreshToken') || '';
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
@@ -23,6 +24,7 @@ export default function Header() {
             localStorage.setItem('refreshToken', '');
             checkLoginStatus();
             console.log(response.data.result);
+            navigate('/');
         } catch (error: any) {
             console.log(error.response.data.errors);
         }
@@ -45,13 +47,14 @@ export default function Header() {
                             </Link>
                         </div>
                         <div className={styles.searchContainer}>
-                            <form action="/productsearch" className={styles.formContainer}>
+                            <form action="/productsearch" className={styles.formContainer} method="get">
                                 <input
                                     type="text"
+                                    name="query"
                                     placeholder="Tìm kiếm sản phẩm"
                                     className={styles.searchInput}
-                                ></input>
-                                <button className={styles.searchBtn} aria-label="Tìm kiếm">
+                                />
+                                <button type="submit" className={styles.searchBtn} aria-label="Tìm kiếm">
                                     <img src={searchBtn} alt="Tìm kiếm" className={styles.searchImg} />
                                 </button>
                             </form>
@@ -91,7 +94,7 @@ export default function Header() {
                                     </Link>
                                 </div>
                             </div>
-                            <div className={styles.favoriteContainer}>
+                            {/* <div className={styles.favoriteContainer}>
                                 <img src={heart} alt="" className={styles.icon} />
                                 <div className={styles.favorite}>
                                     <span className={styles.count}>0</span>
@@ -99,7 +102,7 @@ export default function Header() {
                                         Yêu thích
                                     </Link>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
