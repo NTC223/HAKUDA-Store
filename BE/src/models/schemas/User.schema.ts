@@ -1,14 +1,6 @@
 import { ObjectId } from 'mongodb'
 import { UserVerifyStatus } from '~/constants/enums'
 
-interface Address {
-    _id?: ObjectId
-    name: string
-    phone: string
-    address: string
-    isDefault: boolean
-}
-
 interface UserType {
     _id?: ObjectId
     name: string
@@ -16,7 +8,7 @@ interface UserType {
     password: string
     phone: string
     role?: string
-    address?: Address[]
+    address?: string
     createdAt?: Date
     updatedAt?: Date
     email_verify_token?: string
@@ -31,7 +23,7 @@ class User {
     password: string
     phone: string
     role: string
-    address: Address[]
+    address: string
     createdAt: Date
     updatedAt: Date
     email_verify_token: string
@@ -46,7 +38,7 @@ class User {
         this.password = user.password
         this.phone = user.phone
         this.role = user.role || 'user'
-        this.address = user.address || []
+        this.address = user.address || ''
         this.createdAt = user.createdAt || date
         this.updatedAt = user.updatedAt || date
         this.email_verify_token = user.email_verify_token || ''

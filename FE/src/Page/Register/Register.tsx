@@ -6,7 +6,7 @@ export default function Register() {
     return (
         <main>
             <Navigation active="" />
-            <BreadCrumb />
+            {/* <BreadCrumb /> */}
             <Form type="register" />
         </main>
     );

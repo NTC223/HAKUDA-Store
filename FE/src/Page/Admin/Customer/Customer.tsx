@@ -117,7 +117,7 @@ export default function Customer() {
     return (
         <div className={styles.content}>
             <ToastContainer />
-            <div className={styles.title}>Người dùng</div>
+            <div className={styles.title}>Danh sách người dùng</div>
 
             <div className={styles.dashBoard}>
                 <div className={styles.filterOptions}>

@@ -1,6 +1,7 @@
 import { ObjectId } from 'mongodb'
 
 import databaseService from './database.services'
+import productService from './product.services'
 
 class OrderService {
     async createOrder(user_id: string) {
@@ -17,15 +18,30 @@ class OrderService {
         if (products.length !== cart.items.length) {
             throw new Error('Some products are not found')
         }
+
+        // Check if products have enough stock
+        for (const item of cart.items) {
+            const product = products.find((p) => p._id.equals(item.product_id))
+            if (!product || product.count_in_stock < item.quantity) {
+                throw new Error(`Product ${product?.name} does not have enough stock`)
+            }
+        }
+
         // get address
         const user = await databaseService.users.findOne({ _id: new ObjectId(user_id) })
         if (!user) {
             throw new Error('User is not found')
         }
-        const address = user.address.find((address) => address.isDefault)
+        const address = user.address
         if (!address) {
             throw new Error('Address is not found')
         }
+
+        // Update product quantities
+        for (const item of cart.items) {
+            await productService.updateProductQuantity(new ObjectId(item.product_id), item.quantity)
+        }
+
         // create order
         const order = await databaseService.orders.insertOne({
             _id: new ObjectId(),
@@ -42,14 +58,13 @@ class OrderService {
             ),
             status: 'pending',
             payment_status: 'unpaid',
-            shipping_address: {
-                name: address.name,
-                phone: address.phone,
-                address: address.address
-            },
+            shipping_address: address,
+            phone: user.phone,
+            name: user.name,
             createdAt: new Date(),
             updatedAt: new Date()
         })
+
         // delete cart
         await databaseService.carts.deleteOne({ user_id: new ObjectId(user_id) })
         return order

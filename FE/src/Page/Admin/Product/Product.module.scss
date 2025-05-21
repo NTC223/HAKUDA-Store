@@ -37,11 +37,12 @@ table {
     thead {
         th {
             border-bottom: 1px solid #dee2e6;
-            background: var(--hover);
-            color: #fff;
+            background: #f8f9fa;
+            color: #333;
             padding: 10px;
             vertical-align: bottom;
             border-top: 1px solid #dee2e6;
+            font-weight: 600;
             input {
                 height: 20px;
                 margin: 0;
@@ -53,6 +54,7 @@ table {
         padding: 12px;
         vertical-align: top;
         border-top: 1px solid #dee2e6;
+        color: #666;
         input {
             height: 20px;
             margin: 0;
@@ -92,5 +94,112 @@ table {
     &:hover {
         background-color: var(--hover);
         transform: scale(1.1);
+    }
+}
+
+.productRow {
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #f8f9fa;
+    }
+}
+
+.productInfo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 80px;
+
+    span {
+        font-weight: 500;
+    }
+}
+
+.price {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    color: red;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.category {
+    height: 80px;
+    display: flex;
+    align-items: center;
+
+    span {
+        padding: 4px 8px;
+        background-color: #f0f0f0;
+        border-radius: 4px;
+        font-size: 13px;
+    }
+}
+
+.maker {
+    height: 80px;
+    display: flex;
+    align-items: center;
+}
+
+.stock {
+    height: 80px;
+    display: flex;
+    align-items: center;
+
+    span {
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 13px;
+    }
+}
+
+.inStock {
+    background-color: #e6f4ea;
+    color: #1e7e34;
+}
+
+.outOfStock {
+    background-color: #fce8e6;
+    color: #d32f2f;
+}
+
+.actions {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.editButton {
+    padding: 4px 8px;
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #1565c0;
+    }
+}
+
+.deleteButton {
+    padding: 4px 8px;
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #c62828;
     }
 }

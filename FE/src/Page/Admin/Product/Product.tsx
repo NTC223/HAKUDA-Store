@@ -134,7 +134,7 @@ export default function Product() {
     return (
         <div className={styles.content}>
             <ToastContainer />
-            <div className={styles.title}>Sản phẩm / Tất cả sản phẩm</div>
+            <div className={styles.title}>Danh sách sản phẩm</div>
 
             <div className={styles.dashBoard}>
                 <div className={styles.filterOptions}>
@@ -208,16 +208,10 @@ export default function Product() {
                     </thead>
                     <tbody>
                         {products.map((item, index) => (
-                            <tr key={item._id} style={{ verticalAlign: 'middle' }}>
+                            <tr key={item._id} className={styles.productRow}>
                                 <td style={{ textAlign: 'center' }}>{(currentPage - 1) * pageSize + index + 1}</td>
                                 <td>
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '10px',
-                                        }}
-                                    >
+                                    <div className={styles.productInfo}>
                                         <img
                                             src={item.image}
                                             alt={item.name}
@@ -225,108 +219,33 @@ export default function Product() {
                                             height={80}
                                             style={{ objectFit: 'cover', borderRadius: '4px' }}
                                         />
-                                        <span style={{ fontWeight: 500 }}>{item.name}</span>
-                                    </div>
-                                </td>
-                                <td style={{ color: 'red', fontWeight: 500 }}>
-                                    <div
-                                        style={{
-                                            height: 80,
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            fontSize: '13px',
-                                        }}
-                                    >
-                                        {item.price.toLocaleString('vi-VN')}₫
+                                        <span>{item.name}</span>
                                     </div>
                                 </td>
                                 <td>
-                                    <div
-                                        style={{
-                                            height: 80,
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        <span
-                                            style={{
-                                                padding: '4px 8px',
-                                                backgroundColor: '#f0f0f0',
-                                                borderRadius: '4px',
-                                                fontSize: '13px',
-                                            }}
-                                        >
-                                            {item.category}
-                                        </span>
+                                    <div className={styles.price}>{item.price.toLocaleString('vi-VN')}₫</div>
+                                </td>
+                                <td>
+                                    <div className={styles.category}>
+                                        <span>{item.category}</span>
                                     </div>
                                 </td>
                                 <td>
-                                    <div
-                                        style={{
-                                            height: 80,
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        {item.maker}
-                                    </div>
+                                    <div className={styles.maker}>{item.maker}</div>
                                 </td>
                                 <td>
-                                    <div
-                                        style={{
-                                            height: 80,
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        <span
-                                            style={{
-                                                padding: '4px 8px',
-                                                backgroundColor: item.count_in_stock > 0 ? '#e6f4ea' : '#fce8e6',
-                                                color: item.count_in_stock > 0 ? '#1e7e34' : '#d32f2f',
-                                                borderRadius: '4px',
-                                                fontSize: '13px',
-                                            }}
-                                        >
+                                    <div className={styles.stock}>
+                                        <span className={item.count_in_stock > 0 ? styles.inStock : styles.outOfStock}>
                                             {item.count_in_stock}
                                         </span>
                                     </div>
                                 </td>
                                 <td>
-                                    <div
-                                        style={{
-                                            height: 80,
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '8px',
-                                        }}
-                                    >
-                                        <button
-                                            onClick={() => handleEdit(item._id)}
-                                            style={{
-                                                padding: '4px 8px',
-                                                backgroundColor: '#1976d2',
-                                                color: 'white',
-                                                border: 'none',
-                                                borderRadius: '4px',
-                                                cursor: 'pointer',
-                                                fontSize: '13px',
-                                            }}
-                                        >
+                                    <div className={styles.actions}>
+                                        <button onClick={() => handleEdit(item._id)} className={styles.editButton}>
                                             Sửa
                                         </button>
-                                        <button
-                                            onClick={() => handleDelete(item._id)}
-                                            style={{
-                                                padding: '4px 8px',
-                                                backgroundColor: '#d32f2f',
-                                                color: 'white',
-                                                border: 'none',
-                                                borderRadius: '4px',
-                                                cursor: 'pointer',
-                                                fontSize: '13px',
-                                            }}
-                                        >
+                                        <button onClick={() => handleDelete(item._id)} className={styles.deleteButton}>
                                             Xóa
                                         </button>
                                     </div>
@@ -336,7 +255,7 @@ export default function Product() {
                     </tbody>
                 </table>
             </div>
-            <div style={{ textAlign: 'right', paddingRight: 20 }}>
+            <div style={{ textAlign: 'right', paddingRight: 20, marginTop: 20 }}>
                 <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
                     ← Trang trước
                 </button>

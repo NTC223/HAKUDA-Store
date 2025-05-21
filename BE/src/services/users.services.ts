@@ -114,8 +114,10 @@ class UsersService {
         if (!user) {
             throw new Error('User not found')
         }
-        const address = [...user.address, reqBody]
-        return await databaseService.users.updateOne({ _id: new ObjectId(user_id) }, { $set: { address } })
+        return await databaseService.users.updateOne(
+            { _id: new ObjectId(user_id) },
+            { $set: { address: reqBody.address, phone: reqBody.phone } }
+        )
     }
 
     async changePassword(user_id: string, reqBody: ChangePasswordRequestBody) {

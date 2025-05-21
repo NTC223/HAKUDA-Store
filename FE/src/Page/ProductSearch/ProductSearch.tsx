@@ -87,7 +87,7 @@ export default function ProductSearch() {
         return (
             <div>
                 <Navigation active="" />
-                <BreadCrumb />
+                {/* <BreadCrumb /> */}
                 <div className={styles.loading}>Đang tải...</div>
             </div>
         );
@@ -97,7 +97,7 @@ export default function ProductSearch() {
         return (
             <div>
                 <Navigation active="" />
-                <BreadCrumb />
+                {/* <BreadCrumb /> */}
                 <div className={styles.error}>{error}</div>
             </div>
         );
@@ -106,7 +106,7 @@ export default function ProductSearch() {
     return (
         <div>
             <Navigation active="" />
-            <BreadCrumb />
+            {/* <BreadCrumb /> */}
             <section>
                 <div className={styles.container}>
                     <div className={styles.row}>

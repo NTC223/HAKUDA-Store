@@ -1,38 +1,42 @@
 import React from 'react';
-import { useState } from 'react';
 import styles from './NumberProduct.module.scss';
 
-export default function NumberProduct() {
-    const [numberProduct, setNumberProduct] = useState('1');
+interface NumberProductProps {
+    value: number;
+    onChange: (value: number) => void;
+}
+
+export default function NumberProduct({ value, onChange }: NumberProductProps) {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let value = e.target.value;
-        if (value === '' || /^[0-9\b]+$/.test(value)) {
-            setNumberProduct(value);
+        let newValue = e.target.value;
+        if (newValue === '' || /^[0-9\b]+$/.test(newValue)) {
+            const numValue = parseInt(newValue) || 1;
+            onChange(numValue);
         }
     };
+
     const handleBlur = () => {
-        if (numberProduct === '') {
-            setNumberProduct('1'); // Khi mất focus, nếu input rỗng thì đặt lại "1"
+        if (!value) {
+            onChange(1);
         }
     };
+
     const handleIncNumberProduct = () => {
-        setNumberProduct(String(parseInt(numberProduct) + 1));
+        onChange(value + 1);
     };
+
     const handleDescNumberProduct = () => {
-        if (numberProduct > '1') setNumberProduct(String(parseInt(numberProduct) - 1));
+        if (value > 1) {
+            onChange(value - 1);
+        }
     };
+
     return (
         <div className={styles.numberProduct}>
             <button onClick={handleDescNumberProduct} type="button">
                 -
             </button>
-            <input
-                aria-label="Số lượng"
-                type="text"
-                value={numberProduct}
-                onChange={handleChange}
-                onBlur={handleBlur}
-            />
+            <input aria-label="Số lượng" type="text" value={value} onChange={handleChange} onBlur={handleBlur} />
             <button onClick={handleIncNumberProduct} type="button">
                 +
             </button>

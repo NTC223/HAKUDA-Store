@@ -22,6 +22,7 @@ export const addController = async (req: Request, res: Response) => {
         // Tạo object product với dữ liệu từ request
         const productData = {
             ...req.body,
+            sold: 0,
             image: imageUrl,
             createdAt: new Date(),
             updatedAt: new Date()
@@ -179,11 +180,15 @@ export const getProductsWithSearchAndSortController = async (req: Request, res: 
         return
     }
 
+    // Kiểm tra và xử lý tham số sortBy
+    const validSortFields = ['name', 'price', 'createdAt', 'sold']
+    const finalSortBy = validSortFields.includes(sortBy as string) ? sortBy : 'name'
+
     const result = await productService.getProductsWithSearchAndSort(
         query as string,
         Number(page),
         Number(pageSize),
-        sortBy as string,
+        finalSortBy as string,
         sortOrder as 'asc' | 'desc'
     )
     res.json({

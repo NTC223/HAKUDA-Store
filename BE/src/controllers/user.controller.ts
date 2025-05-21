@@ -4,7 +4,7 @@ import { Request, Response } from 'express'
 import usersService from '~/services/users.services'
 
 export const getUserByIdController = async (req: Request, res: Response) => {
-    const user_id = req.decoded_authorization?.user_id as string
+    const user_id = req.params.user_id
     const user = await usersService.getUserById(user_id)
     res.json({
         message: 'User fetched successfully',
@@ -13,14 +13,38 @@ export const getUserByIdController = async (req: Request, res: Response) => {
     return
 }
 
-export const updateUserAddressController = async (req: Request, res: Response) => {
+export const getProfileController = async (req: Request, res: Response) => {
     const user_id = req.decoded_authorization?.user_id as string
-    const user = await usersService.updateUserAddress(user_id, req.body)
+    const user = await usersService.getUserById(user_id)
     res.json({
-        message: 'User address updated successfully',
+        message: 'User fetched successfully',
         result: user
     })
-    return
+}
+
+export const updateUserAddressController = async (req: Request, res: Response) => {
+    const user_id = req.decoded_authorization?.user_id as string
+    const { address, phone } = req.body
+
+    if (!address || typeof address !== 'string') {
+        res.status(400).json({
+            message: 'Address is required and must be a string'
+        })
+        return
+    }
+
+    if (!phone || typeof phone !== 'string') {
+        res.status(400).json({
+            message: 'Phone is required and must be a string'
+        })
+        return
+    }
+
+    const user = await usersService.updateUserAddress(user_id, { address, phone })
+    res.json({
+        message: 'User address and phone updated successfully',
+        result: user
+    })
 }
 
 export const changePasswordController = async (req: Request, res: Response) => {

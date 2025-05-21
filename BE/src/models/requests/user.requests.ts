@@ -1,8 +1,6 @@
 export interface UpdateUserAddressRequestBody {
-    name: string
-    phone: string
     address: string
-    isDefault: boolean
+    phone: string
 }
 
 export interface ChangePasswordRequestBody {

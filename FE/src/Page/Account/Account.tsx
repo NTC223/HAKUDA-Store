@@ -26,7 +26,7 @@ export default function Account() {
             layout: ChangePassword,
         },
         {
-            name: 'Số địa chỉ',
+            name: 'Thông tin liên hệ',
             layout: Address,
         },
         {
@@ -40,7 +40,7 @@ export default function Account() {
     return (
         <>
             <Navigation active="" />
-            <BreadCrumb />
+            {/* <BreadCrumb /> */}
             <section className={styles.pageCustomerAccount}>
                 <div className={styles.container}>
                     <div className={styles.row}>

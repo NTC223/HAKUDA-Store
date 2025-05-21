@@ -2,6 +2,7 @@ import { Router } from 'express'
 import {
     changePasswordController,
     getUserByIdController,
+    getProfileController,
     updateUserAddressController,
     deleteUserController,
     getAllUsersController,
@@ -26,7 +27,14 @@ userRouter.get('/all-users', accessTokenValidator, authorizeadmin, wrapRequestHa
  * Path: /:user_id
  * Method: GET
  */
-userRouter.get('/me', accessTokenValidator, wrapRequestHandler(getUserByIdController))
+userRouter.get('/me', accessTokenValidator, wrapRequestHandler(getProfileController))
+
+/**
+ * Description: Get user by id (admin)
+ * Path: /:user_id
+ * Method: GET
+ */
+userRouter.get('/:user_id', accessTokenValidator, authorizeadmin, wrapRequestHandler(getUserByIdController))
 
 /**
  * Description: Update role (admin)
@@ -56,7 +64,7 @@ userRouter.put(
  * Body: { oldPassword: string, newPassword: string, confirmPassword: string }
  */
 userRouter.put(
-    '/change-password/:user_id',
+    '/change-password/',
     accessTokenValidator,
     changePasswordValidator,
     wrapRequestHandler(changePasswordController)

@@ -13,11 +13,9 @@ interface OrderType {
     total_amount: number
     status?: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled'
     payment_status?: 'unpaid' | 'paid'
-    shipping_address: {
-        name: string
-        phone: string
-        address: string
-    }
+    shipping_address: string
+    phone: string
+    name: string
     createdAt?: Date
     updatedAt?: Date
 }
@@ -29,11 +27,9 @@ class Order {
     total_amount: number
     status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled'
     payment_status: 'unpaid' | 'paid'
-    shipping_address: {
-        name: string
-        phone: string
-        address: string
-    }
+    shipping_address: string
+    phone: string
+    name: string
     createdAt: Date
     updatedAt: Date
 
@@ -46,6 +42,8 @@ class Order {
         this.status = order.status || 'pending'
         this.payment_status = order.payment_status || 'unpaid'
         this.shipping_address = order.shipping_address
+        this.phone = order.phone
+        this.name = order.name
         this.createdAt = order.createdAt || now
         this.updatedAt = order.updatedAt || now
     }

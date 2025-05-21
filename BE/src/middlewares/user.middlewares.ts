@@ -21,19 +21,6 @@ export const updAddressValidator = validate(
                 },
                 trim: true
             },
-            name: {
-                notEmpty: {
-                    errorMessage: USERS_MESSAGES.NAME_IS_REQUIRED
-                },
-                isString: {
-                    errorMessage: USERS_MESSAGES.NAME_MUST_BE_A_STRING
-                },
-                isLength: {
-                    options: { min: 1, max: 255 },
-                    errorMessage: USERS_MESSAGES.NAME_LENGTH_MUST_BE_FROM_1_TO_255
-                },
-                trim: true
-            },
             phone: {
                 notEmpty: {
                     errorMessage: USERS_MESSAGES.PHONE_IS_REQUIRED
@@ -42,14 +29,6 @@ export const updAddressValidator = validate(
                     errorMessage: USERS_MESSAGES.PHONE_IS_INVALID
                 },
                 trim: true
-            },
-            isDefault: {
-                notEmpty: {
-                    errorMessage: USERS_MESSAGES.IS_DEFAULT_IS_REQUIRED
-                },
-                isBoolean: {
-                    errorMessage: USERS_MESSAGES.IS_DEFAULT_MUST_BE_BOOLEAN
-                }
             }
         },
         ['body']

@@ -212,7 +212,10 @@ export default function MNQXH09X() {
                                                                     >
                                                                         Số lượng:
                                                                     </label>
-                                                                    <NumberProduct />
+                                                                    {/* <NumberProduct
+                                                                        value={quantity}
+                                                                        onChange={setQuantity}
+                                                                    /> */}
                                                                 </div>
                                                                 <div
                                                                     className={styles.btnBuy}

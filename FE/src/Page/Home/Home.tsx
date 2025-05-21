@@ -48,7 +48,7 @@ interface Product {
 
 export default function Home() {
     const [newProducts, setNewProducts] = useState<Product[]>([]);
-    const [topPriceProducts, setTopPriceProducts] = useState<Product[]>([]);
+    const [topSoldProducts, setTopSoldProducts] = useState<Product[]>([]);
     const [randomProducts, setRandomProducts] = useState<Product[]>([]);
     const listBanner = [
         {
@@ -180,16 +180,16 @@ export default function Home() {
                 });
                 setNewProducts(newProductsResponse.data.result.products);
 
-                // Lấy sản phẩm có giá cao nhất
-                const topPriceResponse = await axiosInstance.get('/products/products', {
+                // Lấy sản phẩm bán chạy nhất
+                const topSoldResponse = await axiosInstance.get('/products/products', {
                     params: {
                         page: 1,
                         pageSize: 4,
-                        sortBy: 'price',
-                        sortOrder: 'asc',
+                        sortBy: 'sold',
+                        sortOrder: 'desc',
                     },
                 });
-                setTopPriceProducts(topPriceResponse.data.result.products);
+                setTopSoldProducts(topSoldResponse.data.result.products);
 
                 // Lấy sản phẩm ngẫu nhiên
                 const randomResponse = await axiosInstance.get('/products/products', {
@@ -295,7 +295,7 @@ export default function Home() {
                                 <Link to="/">SẢN PHẨM BÁN CHẠY</Link>
                             </h2>
                             <ProdutList
-                                products={topPriceProducts.map((product) => ({
+                                products={topSoldProducts.map((product) => ({
                                     _id: product._id,
                                     name: product.name,
                                     price: product.price.toLocaleString('vi-VN') + '₫',

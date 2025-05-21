@@ -9,6 +9,7 @@ import cartRouter from './routes/cart.routes'
 import orderRouter from './routes/order.routes'
 import userRouter from './routes/user.routes'
 import { createUploadDir } from './utils/createUploadDir'
+import adminRoutes from './routes/admin.routes'
 config()
 
 databaseService.connect()
@@ -31,6 +32,8 @@ app.use('/products', productsRouter)
 app.use('/cart', cartRouter)
 
 app.use('/orders', orderRouter)
+
+app.use('/admin', adminRoutes)
 
 app.use(defaultErrorHandler)
 

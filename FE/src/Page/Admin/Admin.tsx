@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from './Admin.module.scss';
 import Product from './Product';
 import Orders from './Orders';
-
+import overView from '../../Assets/Image/file.png';
 import logo from '../../Assets/Image/logo.png';
 import searchBtn from '../../Assets/Image/search.png';
 import prd from '../../Assets/Image/box.png';
@@ -13,16 +13,13 @@ import user from '../../Assets/Image/group.png';
 import Customer from './Customer';
 import axiosInstance from '../../utils/axios';
 import { useAuth } from '../../context/AuthContext';
+import OverView from './OverView';
 
 export default function AdminPage() {
     const [indexNav, setIndexNav] = useState(0);
 
     const navList = [
-        // {
-        //     name: 'Tổng quan',
-        //     image: overView,
-        //     layout: OverView,
-        // },
+        
         {
             name: 'Sản phẩm',
             image: prd,
@@ -37,6 +34,11 @@ export default function AdminPage() {
             name: 'Danh sách đơn hàng',
             image: orders,
             layout: Orders,
+        },
+        {
+            name: 'Tổng quan',
+            image: overView,
+            layout: OverView,
         },
         // {
         //     name: 'Tồn kho',

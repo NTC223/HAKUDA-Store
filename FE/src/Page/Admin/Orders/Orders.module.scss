@@ -1,21 +1,129 @@
 .content {
-    background: white;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
-    .title {
-        font-size: 18px;
+.title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--main-color);
+}
+
+.dashBoard {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            font-weight: 600;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        td {
+            color: #666;
+        }
     }
 }
 
-.filterOptions {
-    float: right;
-    margin: 10px 0;
-    button {
-        margin-left: 10px;
+.orderRow {
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #f8f9fa;
+    }
+}
+
+.detailRow {
+    background-color: #f8f9fa;
+
+    td {
+        padding: 0;
+    }
+}
+
+.orderDetails {
+    padding: 20px;
+
+    h3 {
+        margin-bottom: 15px;
         color: var(--main-color);
-        background-color: #fff;
-        border: 1;
+    }
+
+    table {
+        margin-bottom: 0;
+
+        th,
+        td {
+            padding: 8px 12px;
+        }
+
+        th:first-child,
+        td:first-child {
+            width: 50%;
+        }
+    }
+}
+
+.statusSelect {
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%;
+    max-width: 150px;
+
+    &:hover {
+        border-color: var(--main-color);
+    }
+
+    &:focus {
+        outline: none;
+        border-color: var(--main-color);
+        box-shadow: 0 0 0 2px rgba(var(--main-color-rgb), 0.1);
+    }
+}
+
+.orderActions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.deleteButton {
+    padding: 8px 16px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: #c82333;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
     }
 }

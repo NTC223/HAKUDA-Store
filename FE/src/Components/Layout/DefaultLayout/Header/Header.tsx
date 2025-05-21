@@ -88,7 +88,7 @@ export default function Header() {
                             <div className={styles.cartContainer}>
                                 <img src={bag} alt="" className={styles.icon} />
                                 <div className={styles.cart}>
-                                    <span className={styles.count}>0</span>
+                                    {/* <span className={styles.count}>0</span> */}
                                     <Link to="/cart" className={styles.link}>
                                         Giỏ hàng <br /> của bạn
                                     </Link>
