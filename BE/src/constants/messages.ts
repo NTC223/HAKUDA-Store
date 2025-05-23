@@ -67,7 +67,11 @@ export const PRODUCTS_MESSAGES = {
     CATEGORY_MUST_BE_STRING: 'Category must be a string',
     IS_ACTIVE_MUST_BE_BOOLEAN: 'Is active must be a boolean',
     MAKER_IS_REQUIRED: 'Maker is required',
-    MAKER_MUST_BE_STRING: 'Maker must be a string'
+    MAKER_MUST_BE_STRING: 'Maker must be a string',
+    ORIGINAL_PRICE_IS_REQUIRED: 'Original price is required',
+    ORIGINAL_PRICE_MUST_BE_POSITIVE_NUMBER: 'Original price must be a positive number',
+    DISCOUNT_PERCENT_IS_REQUIRED: 'Discount percent is required',
+    DISCOUNT_PERCENT_MUST_BE_BETWEEN_0_AND_100: 'Discount percent must be between 0 and 100'
 } as const
 
 export const CART_MESSAGES = {

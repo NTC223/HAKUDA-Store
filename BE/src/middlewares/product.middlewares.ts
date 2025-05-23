@@ -44,6 +44,26 @@ export const addProductValidator = validate(
                 },
                 trim: true
             },
+            original_price: {
+                notEmpty: {
+                    errorMessage: PRODUCTS_MESSAGES.ORIGINAL_PRICE_IS_REQUIRED
+                },
+                isFloat: {
+                    options: { min: 0 },
+                    errorMessage: PRODUCTS_MESSAGES.ORIGINAL_PRICE_MUST_BE_POSITIVE_NUMBER
+                },
+                toFloat: true
+            },
+            discount_percent: {
+                notEmpty: {
+                    errorMessage: PRODUCTS_MESSAGES.DISCOUNT_PERCENT_IS_REQUIRED
+                },
+                isInt: {
+                    options: { min: 0, max: 100 },
+                    errorMessage: PRODUCTS_MESSAGES.DISCOUNT_PERCENT_MUST_BE_BETWEEN_0_AND_100
+                },
+                toInt: true
+            },
             count_in_stock: {
                 notEmpty: {
                     errorMessage: PRODUCTS_MESSAGES.COUNT_IN_STOCK_IS_REQUIRED

@@ -1,61 +1,113 @@
 .content {
-    padding: 20px;
-    background-color: white;
+    padding: 32px 24px;
+    background-color: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+    max-width: 950px;
+    margin: 32px auto;
+}
+
+.formSection {
+    background: #fafbfc;
+    border-radius: 10px;
+    padding: 24px 24px 12px 24px;
+    margin-bottom: 28px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.sectionTitle {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 18px;
+    color: #222;
+}
+
+.grid2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 32px;
+    margin-bottom: 12px;
+}
+.grid3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px 32px;
+    margin-bottom: 12px;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+.formControl {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    padding: 12px 16px;
+    font-size: 1.3rem;
+    font-family: inherit;
+    line-height: 1.5;
+    color: #222;
+    background-color: #fff;
+    border: 1.5px solid #e3eafc;
+    border-radius: 6px;
+    margin-top: 6px;
+    margin-bottom: 0;
+    transition: border 0.2s;
+}
+.formControl:focus {
+    border: 1.5px solid #1976d2;
+    outline: none;
+}
+
+.required {
+    color: #d32f2f;
+    font-weight: 700;
+    margin-left: 2px;
+}
+
+.error {
+    color: #d32f2f;
+    font-size: 0.98rem;
+    margin: 4px 0 0 0;
+}
+
+.imageUploadWrap {
+    border: 2px dashed #b6c6e3;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    background: #f6f8fa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 120px;
+    margin-bottom: 8px;
+}
+.imagePlaceholder {
+    color: #888;
+    font-size: 1.3rem;
+    text-align: center;
+    margin-top: 8px;
+}
 
-    .title {
-        font-size: 20px;
-        font-weight: 600;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #eee;
-    }
-
-    .formContainer {
-        max-width: 800px;
-        margin: 0 auto;
-        .error {
-            color: red;
-            text-align: left;
-            margin: 15px 0 10px 0;
-            // display: none;
-        }
-        .formGroup {
-            border: 0;
-            .formControl {
-                display: block;
-                width: 100%;
-                min-height: 40px;
-                padding: 10px 15px;
-                font-size: 15px;
-                font-family: var(--font-base);
-                line-height: 1.5;
-                color: var(--text-color);
-                background-color: #fff;
-                background-image: none;
-                margin-bottom: 15px;
-                border: 1px solid #eaebf3;
-                box-shadow: none;
-                border-radius: 3px;
-            }
-        }
-        .loginBtn {
-            width: 100%;
-            height: 40px;
-            line-height: 40px;
-            background: var(--main-color);
-            color: #fff;
-            text-align: center;
-            padding: 0;
-            border: none;
-            outline: none;
-            text-transform: uppercase;
-            font-weight: bold;
-            border-radius: 4px;
-        }
-        .loginBtn:hover {
-            background: var(--hover);
-        }
-    }
+.Btn {
+    padding: 12px 28px;
+    background: #1976d2;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background 0.2s;
+}
+.Btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+.Btn:hover:not(:disabled) {
+    background: #1251a3;
 }
