@@ -19,10 +19,10 @@ const orderRouter = Router()
 orderRouter.get('/create-order', accessTokenValidator, wrapRequestHandler(createOrderController))
 
 /**
- * Description: Get order list (Admin)
+ * Description: Get order list (Admin) - hỗ trợ tìm kiếm theo tên khách hàng (query) và lọc theo trạng thái (status)
  * Path: /order-list
  * Method: GET
- * Query: { page: number, pageSize: number }
+ * Query: { page: number, pageSize: number, query?: string, status?: string }
  */
 orderRouter.get('/order-list', accessTokenValidator, authorizeadmin, wrapRequestHandler(getOrderListController))
 

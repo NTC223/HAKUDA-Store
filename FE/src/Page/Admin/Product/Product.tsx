@@ -9,7 +9,9 @@ import 'react-toastify/dist/ReactToastify.css';
 interface Product {
     _id: string;
     name: string;
+    code: string;
     price: number;
+    original_price?: number;
     image: string;
     category: string;
     maker: string;
@@ -17,13 +19,7 @@ interface Product {
     count_in_stock: number;
     createdAt: string;
     updatedAt: string;
-}
-
-interface PaginationInfo {
-    page: number;
-    pageSize: number;
-    total: number;
-    totalPages: number;
+    status: string;
 }
 
 const pageSize = 10;
@@ -36,10 +32,13 @@ export default function Product() {
     const [selectedProductId, setSelectedProductId] = useState<string>('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [sortBy, setSortBy] = useState('name');
-    const [sortOrder, setSortOrder] = useState('asc');
-    const [totalProducts, setTotalProducts] = useState(0);
+    const [sortBy, setSortBy] = useState('createdAt');
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
     const [totalPages, setTotalPages] = useState(0);
+    const [searchInput, setSearchInput] = useState('');
+    const [search, setSearch] = useState('');
+    const [categoryFilter, setCategoryFilter] = useState('');
+    const [categories, setCategories] = useState<string[]>([]);
 
     const handleEdit = (id: string) => {
         setSelectedProductId(id);
@@ -53,10 +52,6 @@ export default function Product() {
                 toast.success('Xóa sản phẩm thành công!', {
                     position: 'top-right',
                     autoClose: 1000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
                 });
                 setTimeout(() => {
                     fetchProducts();
@@ -65,12 +60,7 @@ export default function Product() {
                 toast.error(err.response?.data?.message || 'Không thể xóa sản phẩm', {
                     position: 'top-right',
                     autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
                 });
-                console.error('Error deleting product:', err);
             }
         }
     };
@@ -84,18 +74,16 @@ export default function Product() {
                     pageSize: pageSize,
                     sortBy,
                     sortOrder,
-                    query: '',
+                    query: search,
+                    category: categoryFilter,
                 },
             });
-
             const { products, pagination } = response.data.result;
             setProducts(products);
-            setTotalProducts(pagination.total);
             setTotalPages(pagination.totalPages);
         } catch (err: any) {
             setError('Không thể tải danh sách sản phẩm');
             setProducts([]);
-            console.error('Error fetching products:', err);
         } finally {
             setLoading(false);
         }
@@ -103,11 +91,37 @@ export default function Product() {
 
     useEffect(() => {
         fetchProducts();
-    }, [currentPage, sortBy, sortOrder]);
+        // eslint-disable-next-line
+    }, [currentPage, sortBy, sortOrder, categoryFilter, search]);
 
     useEffect(() => {
-        window.scroll(0, 0);
-    }, [currentPage]);
+        const fetchCategories = async () => {
+            try {
+                const response = await axiosInstance.get('/products/products', {
+                    params: { page: 1, pageSize: 1000 },
+                });
+                const products = response.data.result.products;
+                const uniqueCategories = Array.from(new Set(products.map((p: Product) => p.category))) as string[];
+                setCategories(uniqueCategories);
+            } catch (error) {}
+        };
+        fetchCategories();
+    }, []);
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        setSearch(searchInput);
+        setCurrentPage(1);
+    };
+
+    const handleSort = (field: string) => {
+        if (sortBy === field) {
+            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortBy(field);
+            setSortOrder('asc');
+        }
+    };
 
     const handleCancel = () => {
         setShowAddProduct(false);
@@ -118,150 +132,124 @@ export default function Product() {
     if (showAddProduct) {
         return <AddProduct onCancel={handleCancel} />;
     }
-
     if (showEditProduct) {
         return <EditProduct onCancel={handleCancel} productId={selectedProductId} />;
     }
-
     if (loading) {
         return <div>Đang tải...</div>;
     }
-
     if (error) {
         return <div className={styles.error}>{error}</div>;
     }
 
     return (
-        <div className={styles.content}>
+        <div className={styles.productPage}>
             <ToastContainer />
-            <div className={styles.title}>Danh sách sản phẩm</div>
-
-            <div className={styles.dashBoard}>
-                <div className={styles.filterOptions}>
-                    <button
-                        type="submit"
-                        onClick={() => {
-                            setSortBy('name');
-                            setSortOrder('asc');
+            <div className={styles.pageHeader}>
+                <h1>Quản lý sản phẩm</h1>
+                <button className={styles.addBtn} onClick={() => setShowAddProduct(true)}>
+                    + Thêm sản phẩm
+                </button>
+            </div>
+            <form className={styles.searchBar} onSubmit={handleSearch}>
+                <input
+                    type="text"
+                    placeholder="Tìm kiếm sản phẩm..."
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    style={{ maxWidth: 200 }}
+                />
+                <button type="submit">Tìm kiếm</button>
+                <div className={styles.filterWrap}>
+                    <span> Lọc theo loại: </span>
+                    <select
+                        value={categoryFilter}
+                        onChange={(e) => {
+                            setCategoryFilter(e.target.value);
+                            setCurrentPage(1);
                         }}
                     >
-                        Tên A - Z
-                    </button>
-                    <button
-                        type="submit"
-                        onClick={() => {
-                            setSortBy('name');
-                            setSortOrder('desc');
-                        }}
-                    >
-                        Tên Z - A
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setSortBy('price');
-                            setSortOrder('asc');
-                        }}
-                    >
-                        Giá thấp đến cao
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setSortBy('price');
-                            setSortOrder('desc');
-                        }}
-                    >
-                        Giá cao đến thấp
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setSortBy('createdAt');
-                            setSortOrder('desc');
-                        }}
-                    >
-                        Mới nhất
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setSortBy('createdAt');
-                            setSortOrder('asc');
-                        }}
-                    >
-                        Cũ nhất
-                    </button>
+                        <option value="">Tất cả</option>
+                        {categories.map((cat, idx) => (
+                            <option key={idx} value={cat}>
+                                {cat}
+                            </option>
+                        ))}
+                    </select>
                 </div>
-
-                <table>
+            </form>
+            <div className={styles.tableWrap}>
+                <table className={styles.productTable}>
                     <thead>
                         <tr>
-                            <th style={{ width: '5%' }}>STT</th>
-                            <th style={{ width: '38%' }}>Sản phẩm</th>
-                            <th style={{ width: '12%' }}>Giá</th>
-                            <th style={{ width: '15%' }}>Loại</th>
-                            <th style={{ width: '15%' }}>Thương hiệu</th>
-                            <th style={{ width: '10%' }}>Số lượng</th>
-                            <th style={{ width: '5%' }}>Thao tác</th>
+                            <th style={{ width: '10%' }}>Ảnh</th>
+                            <th onClick={() => handleSort('createdAt')} style={{ cursor: 'pointer', width: '10%' }}>
+                                Ngày tạo {sortBy === 'createdAt' && (sortOrder === 'asc' ? '↑' : '↓')}
+                            </th>
+                            <th onClick={() => handleSort('name')} style={{ cursor: 'pointer', width: '30%' }}>
+                                Tên sản phẩm {sortBy === 'name' && (sortOrder === 'asc' ? '↑' : '↓')}
+                            </th>
+                            <th>Loại sản phẩm</th>
+                            <th>Tồn kho</th>
+                            <th onClick={() => handleSort('price')} style={{ cursor: 'pointer' }}>
+                                Giá {sortBy === 'price' && (sortOrder === 'asc' ? '↑' : '↓')}
+                            </th>
+                            <th>Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((item, index) => (
-                            <tr key={item._id} className={styles.productRow}>
-                                <td style={{ textAlign: 'center' }}>{(currentPage - 1) * pageSize + index + 1}</td>
+                        {products.map((item) => (
+                            <tr key={item._id}>
                                 <td>
-                                    <div className={styles.productInfo}>
-                                        <img
-                                            src={item.image}
-                                            alt={item.name}
-                                            width={80}
-                                            height={80}
-                                            style={{ objectFit: 'cover', borderRadius: '4px' }}
-                                        />
-                                        <span>{item.name}</span>
-                                    </div>
+                                    <img src={item.image} alt={item.name} className={styles.productImg} />
+                                </td>
+                                <td className={styles.createdAtCell}>
+                                    {new Date(item.createdAt).toLocaleDateString('vi-VN')}
+                                </td>
+                                <td className={styles.nameCell}>{item.name}</td>
+                                <td>{item.category}</td>
+                                <td>
+                                    <span className={item.count_in_stock > 20 ? styles.inStock : styles.lowStock}>
+                                        {item.count_in_stock}
+                                    </span>
                                 </td>
                                 <td>
-                                    <div className={styles.price}>{item.price.toLocaleString('vi-VN')}₫</div>
+                                    {item.original_price && item.original_price > item.price ? (
+                                        <>
+                                            <span className={styles.oldPrice}>
+                                                {item.original_price.toLocaleString('vi-VN')} ₫
+                                            </span>
+                                            <span className={styles.salePrice}>
+                                                {item.price.toLocaleString('vi-VN')} ₫
+                                            </span>
+                                        </>
+                                    ) : (
+                                        <span className={styles.salePrice}>{item.price.toLocaleString('vi-VN')} ₫</span>
+                                    )}
                                 </td>
                                 <td>
-                                    <div className={styles.category}>
-                                        <span>{item.category}</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div className={styles.maker}>{item.maker}</div>
-                                </td>
-                                <td>
-                                    <div className={styles.stock}>
-                                        <span className={item.count_in_stock > 0 ? styles.inStock : styles.outOfStock}>
-                                            {item.count_in_stock}
+                                    <button className={styles.actionBtn} onClick={() => handleEdit(item._id)}>
+                                        <span role="img" aria-label="edit">
+                                            ✏️
                                         </span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div className={styles.actions}>
-                                        <button onClick={() => handleEdit(item._id)} className={styles.editButton}>
-                                            Sửa
-                                        </button>
-                                        <button onClick={() => handleDelete(item._id)} className={styles.deleteButton}>
-                                            Xóa
-                                        </button>
-                                    </div>
+                                    </button>
+                                    <button className={styles.actionBtn} onClick={() => handleDelete(item._id)}>
+                                        <span role="img" aria-label="delete">
+                                            🗑️
+                                        </span>
+                                    </button>
                                 </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
-            <div style={{ textAlign: 'right', paddingRight: 20, marginTop: 20 }}>
+            <div className={styles.pagination}>
                 <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
                     ← Trang trước
                 </button>
-                <span>
-                    {' '}
-                    Trang {currentPage} / {totalPages}{' '}
+                <span style={{ margin: '0 12px' }}>
+                    Trang {currentPage} / {totalPages}
                 </span>
                 <button
                     onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
@@ -270,9 +258,6 @@ export default function Product() {
                     Trang sau →
                 </button>
             </div>
-            <button className={styles.addButton} onClick={() => setShowAddProduct(true)}>
-                +
-            </button>
         </div>
     );
 }

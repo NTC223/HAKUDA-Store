@@ -168,7 +168,7 @@ export const updateProductController = async (req: Request, res: Response) => {
 }
 
 export const getProductsWithSearchAndSortController = async (req: Request, res: Response) => {
-    const { query = '', page = 1, pageSize = 10, sortBy = 'name', sortOrder = 'asc' } = req.query
+    const { query = '', page = 1, pageSize = 10, sortBy = 'name', sortOrder = 'asc', category = '' } = req.query
 
     // Xử lý trường hợp lấy sản phẩm ngẫu nhiên
     if (sortBy === 'random') {
@@ -189,7 +189,8 @@ export const getProductsWithSearchAndSortController = async (req: Request, res: 
         Number(page),
         Number(pageSize),
         finalSortBy as string,
-        sortOrder as 'asc' | 'desc'
+        sortOrder as 'asc' | 'desc',
+        category as string
     )
     res.json({
         message: 'Products fetched successfully',

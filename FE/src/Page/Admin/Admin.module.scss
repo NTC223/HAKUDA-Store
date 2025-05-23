@@ -221,3 +221,242 @@ table {
     width: 100%;
     min-height: 1px;
 }
+
+.adminLayout {
+    display: flex;
+    min-height: 100vh;
+    background: #f6f8fa;
+}
+
+.sidebar {
+    width: 240px;
+    background: #fff;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 32px;
+}
+.logoWrap {
+    margin-bottom: 32px;
+}
+.logo {
+    width: 160px;
+    height: auto;
+}
+.menu {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+.menu li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 32px;
+    font-size: 16px;
+    color: #222;
+    cursor: pointer;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    transition: background 0.2s, color 0.2s;
+}
+.menu li:hover,
+.menu .active,
+.menu li.active {
+    background: #f0f4ff;
+    color: #2563eb;
+}
+.menuIcon {
+    width: 24px;
+    height: 24px;
+}
+
+.mainContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 32px 0 32px;
+    background: transparent;
+}
+.headerTitle {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #222;
+}
+.headerRight {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-size: 1rem;
+    color: #555;
+}
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #2563eb;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+.pageContent {
+    flex: 1;
+    padding: 24px 32px 32px 32px;
+    min-width: 0;
+}
+
+.dashboardWrap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+.statCard {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+.statCard h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    color: #222;
+}
+.statCard .value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2563eb;
+}
+.chartCard {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    padding: 24px 20px;
+    margin-bottom: 8px;
+}
+.detailsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.detailCard {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    padding: 20px 16px;
+}
+.detailCard h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+.detailCard table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 1.08rem;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.detailCard th,
+.detailCard td {
+    padding: 14px 10px;
+    text-align: left;
+    font-size: 1.08rem;
+}
+.detailCard th {
+    background: #e0e7ef;
+    font-weight: 700;
+    color: #222;
+    font-size: 1.12rem;
+}
+.detailCard tr:nth-child(even) {
+    background: #f9fafb;
+}
+.detailCard tr {
+    background: #fff;
+}
+@media (max-width: 900px) {
+    .detailsGrid {
+        grid-template-columns: 1fr;
+    }
+    .statsGrid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+@media (max-width: 600px) {
+    .adminLayout {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 12px 0;
+    }
+    .mainContent {
+        padding: 0;
+    }
+    .header,
+    .pageContent {
+        padding: 12px;
+    }
+    .statsGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.avatarWrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.avatarMenu {
+    position: absolute;
+    top: 48px;
+    right: 0;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    padding: 10px 0;
+    min-width: 140px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+.avatarMenu button {
+    background: none;
+    border: none;
+    color: #d32f2f;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 10px 20px;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+.avatarMenu button:hover {
+    background: #f6f8fa;
+}

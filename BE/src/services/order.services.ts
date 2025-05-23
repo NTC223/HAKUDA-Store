@@ -70,11 +70,18 @@ class OrderService {
         return order
     }
 
-    async getOrderList(page: number = 1, pageSize: number = 10) {
+    async getOrderList(page: number = 1, pageSize: number = 10, query: string = '', status: string = '') {
         const skip = (page - 1) * pageSize
+        const filter: any = {}
+        if (query) {
+            filter.name = { $regex: query, $options: 'i' }
+        }
+        if (status) {
+            filter.status = status
+        }
         const [orders, total] = await Promise.all([
-            databaseService.orders.find({}).skip(skip).limit(pageSize).toArray(),
-            databaseService.orders.countDocuments({})
+            databaseService.orders.find(filter).skip(skip).limit(pageSize).toArray(),
+            databaseService.orders.countDocuments(filter)
         ])
         return {
             orders,

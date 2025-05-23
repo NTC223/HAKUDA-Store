@@ -67,7 +67,8 @@ class ProductService {
         page: number = 1,
         pageSize: number = 10,
         sortBy: string = 'name',
-        sortOrder: 'asc' | 'desc' = 'asc'
+        sortOrder: 'asc' | 'desc' = 'asc',
+        category: string = ''
     ) {
         const skip = (page - 1) * pageSize
         const sortOptions: { [key: string]: 1 | -1 } = {}
@@ -79,11 +80,17 @@ class ProductService {
             sortOptions[sortBy] = sortOrder === 'asc' ? 1 : -1
         }
 
-        const searchQuery = query
-            ? {
-                  $text: { $search: query }
-              }
-            : {}
+        let searchQuery: any = {}
+        if (query) {
+            if (query.length < 2) {
+                searchQuery = { name: { $regex: query, $options: 'i' } }
+            } else {
+                searchQuery = { $text: { $search: query } }
+            }
+        }
+        if (category) {
+            searchQuery = { ...searchQuery, category }
+        }
 
         const [products, total] = await Promise.all([
             databaseService.products.find(searchQuery).sort(sortOptions).skip(skip).limit(pageSize).toArray(),

@@ -31,6 +31,15 @@ interface Order {
     createdAt: string;
 }
 
+const STATUS_OPTIONS = [
+    { value: '', label: 'Tất cả' },
+    { value: 'pending', label: 'Chờ xác nhận' },
+    { value: 'confirmed', label: 'Đã xác nhận' },
+    { value: 'shipped', label: 'Đang giao hàng' },
+    { value: 'delivered', label: 'Đã giao hàng' },
+    { value: 'cancelled', label: 'Đã hủy' },
+];
+
 export default function Orders() {
     const [orders, setOrders] = useState<Order[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -39,6 +48,9 @@ export default function Orders() {
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [products, setProducts] = useState<{ [key: string]: Product }>({});
     const [users, setUsers] = useState<{ [key: string]: User }>({});
+    const [searchInput, setSearchInput] = useState('');
+    const [search, setSearch] = useState('');
+    const [statusFilter, setStatusFilter] = useState('');
     const pageSize = 10;
 
     useEffect(() => {
@@ -49,12 +61,13 @@ export default function Orders() {
                     params: {
                         page: currentPage,
                         pageSize: pageSize,
+                        query: search,
+                        status: statusFilter,
                     },
                 });
                 const ordersData = response.data.result.orders;
                 setOrders(ordersData);
                 setTotalPages(response.data.result.pagination.totalPages);
-
                 // Lấy thông tin người dùng cho tất cả đơn hàng
                 const uniqueUserIds = Array.from(new Set<string>(ordersData.map((order: Order) => order.user_id)));
                 uniqueUserIds.forEach((userId: string) => {
@@ -66,13 +79,12 @@ export default function Orders() {
                 setLoading(false);
             }
         };
-
         fetchOrders();
-    }, [currentPage]);
+        // eslint-disable-next-line
+    }, [currentPage, search, statusFilter]);
 
     const fetchProductDetails = async (productId: string) => {
         if (products[productId]) return;
-
         try {
             const response = await axiosInstance.get(`/products/${productId}`);
             setProducts((prev) => ({
@@ -86,7 +98,6 @@ export default function Orders() {
 
     const fetchUserDetails = async (userId: string) => {
         if (users[userId]) return;
-
         try {
             const response = await axiosInstance.get(`/users/${userId}`);
             setUsers((prev) => ({
@@ -113,29 +124,13 @@ export default function Orders() {
         return format(new Date(dateString), 'dd/MM/yyyy HH:mm', { locale: vi });
     };
 
-    const getStatusText = (status: string) => {
-        const statusMap: { [key: string]: string } = {
-            pending: 'Chờ xác nhận',
-            confirmed: 'Đã xác nhận',
-            shipped: 'Đang giao hàng',
-            delivered: 'Đã giao hàng',
-            cancelled: 'Đã hủy',
-        };
-        return statusMap[status] || status;
-    };
-
-    const getPaymentStatusText = (status: string) => {
-        return status === 'paid' ? 'Đã thanh toán' : 'Chưa thanh toán';
-    };
-
     const updateOrderStatus = async (orderId: string, status: Order['status']) => {
         try {
             const order = orders.find((o) => o._id === orderId);
             if (!order) return;
-
             await axiosInstance.put(`/orders/${orderId}`, {
                 status,
-                payment_status: order.payment_status, // Giữ nguyên trạng thái thanh toán
+                payment_status: order.payment_status,
             });
             setOrders(orders.map((order) => (order._id === orderId ? { ...order, status } : order)));
         } catch (error) {
@@ -147,10 +142,9 @@ export default function Orders() {
         try {
             const order = orders.find((o) => o._id === orderId);
             if (!order) return;
-
             await axiosInstance.put(`/orders/${orderId}`, {
                 payment_status,
-                status: order.status, // Giữ nguyên trạng thái đơn hàng
+                status: order.status,
             });
             setOrders(orders.map((order) => (order._id === orderId ? { ...order, payment_status } : order)));
         } catch (error) {
@@ -162,7 +156,6 @@ export default function Orders() {
         if (!window.confirm('Bạn có chắc chắn muốn xóa đơn hàng này?')) {
             return;
         }
-
         try {
             await axiosInstance.delete(`/orders/delete-order/${orderId}`);
             setOrders(orders.filter((order) => order._id !== orderId));
@@ -172,47 +165,82 @@ export default function Orders() {
         }
     };
 
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        setSearch(searchInput);
+        setCurrentPage(1);
+    };
+
     if (loading) {
         return <div>Đang tải...</div>;
     }
 
     return (
-        <div className={styles.content}>
-            <div className={styles.title}>Danh sách đơn hàng</div>
-
-            <div className={styles.dashBoard}>
-                <table>
+        <div className={styles.productPage}>
+            <div className={styles.pageHeader}>
+                <h1>Quản lý đơn hàng</h1>
+            </div>
+            <form className={styles.searchBar} onSubmit={handleSearch}>
+                <input
+                    type="text"
+                    placeholder="Tìm kiếm đơn hàng..."
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                />
+                <button type="submit">Tìm kiếm</button>
+                <div className={styles.filterWrap}>
+                    <span>Lọc theo trạng thái:</span>
+                    <select
+                        value={statusFilter}
+                        onChange={(e) => {
+                            setStatusFilter(e.target.value);
+                            setCurrentPage(1);
+                        }}
+                    >
+                        {STATUS_OPTIONS.map((opt) => (
+                            <option key={opt.value} value={opt.value}>
+                                {opt.label}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            </form>
+            <div className={styles.tableWrap}>
+                <table className={styles.productTable}>
                     <thead>
                         <tr>
-                            <th style={{ width: '5%' }}>STT</th>
-                            <th>Ngày tạo</th>
-                            <th>Khách hàng</th>
+                            <th style={{ width: '10%' }}>Ngày tạo</th>
+                            <th style={{ width: '20%' }}>Khách hàng</th>
                             <th>Địa chỉ</th>
-                            <th>Tổng tiền</th>
-                            <th>Trạng thái</th>
-                            <th>Thanh toán</th>
+                            <th style={{ width: '12%' }}>Tổng tiền</th>
+                            <th style={{ width: '12%' }}>Trạng thái</th>
+                            <th style={{ width: '15%' }}>Thanh toán</th>
                         </tr>
                     </thead>
                     <tbody>
                         {orders.length > 0 ? (
-                            orders.map((order, index) => (
+                            orders.map((order) => (
                                 <React.Fragment key={order._id}>
-                                    <tr onClick={() => handleOrderClick(order)} className={styles.orderRow}>
-                                        <td style={{ textAlign: 'center' }}>
-                                            {(currentPage - 1) * pageSize + index + 1}
-                                        </td>
-                                        <td>{formatDate(order.createdAt)}</td>
+                                    <tr
+                                        onClick={() => handleOrderClick(order)}
+                                        className={styles.orderRow}
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                        <td className={styles.createdAtCell}>{formatDate(order.createdAt)}</td>
                                         <td>{users[order.user_id]?.name || 'Đang tải...'}</td>
                                         <td>{order.shipping_address}</td>
-                                        <td>{order.total_amount.toLocaleString('vi-VN')}₫</td>
+                                        <td className={styles.priceCell}>
+                                            {order.total_amount.toLocaleString('vi-VN')}₫
+                                        </td>
                                         <td>
                                             <select
                                                 value={order.status}
-                                                onChange={(e) =>
-                                                    updateOrderStatus(order._id, e.target.value as Order['status'])
-                                                }
-                                                onClick={(e) => e.stopPropagation()}
+                                                onChange={(e) => {
+                                                    e.stopPropagation();
+                                                    updateOrderStatus(order._id, e.target.value as Order['status']);
+                                                }}
                                                 className={styles.statusSelect}
+                                                onClick={(e) => e.stopPropagation()}
                                             >
                                                 <option value="pending">Chờ xác nhận</option>
                                                 <option value="confirmed">Đã xác nhận</option>
@@ -224,14 +252,15 @@ export default function Orders() {
                                         <td>
                                             <select
                                                 value={order.payment_status}
-                                                onChange={(e) =>
+                                                onChange={(e) => {
+                                                    e.stopPropagation();
                                                     updatePaymentStatus(
                                                         order._id,
                                                         e.target.value as Order['payment_status'],
-                                                    )
-                                                }
-                                                onClick={(e) => e.stopPropagation()}
+                                                    );
+                                                }}
                                                 className={styles.statusSelect}
+                                                onClick={(e) => e.stopPropagation()}
                                             >
                                                 <option value="unpaid">Chưa thanh toán</option>
                                                 <option value="paid">Đã thanh toán</option>
@@ -240,7 +269,7 @@ export default function Orders() {
                                     </tr>
                                     {selectedOrder?._id === order._id && (
                                         <tr className={styles.detailRow}>
-                                            <td colSpan={7}>
+                                            <td colSpan={6}>
                                                 <div className={styles.orderDetails}>
                                                     <h3>Chi tiết đơn hàng</h3>
                                                     <table>
@@ -290,21 +319,20 @@ export default function Orders() {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={7}>
+                                <td colSpan={6}>
                                     <p>Không có đơn hàng nào.</p>
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
                         )}
                     </tbody>
                 </table>
             </div>
-            <div style={{ textAlign: 'right', paddingRight: 20, marginTop: 20 }}>
+            <div className={styles.pagination}>
                 <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
                     ← Trang trước
                 </button>
-                <span>
-                    {' '}
-                    Trang {currentPage} / {totalPages}{' '}
+                <span style={{ margin: '0 12px' }}>
+                    Trang {currentPage} / {totalPages}
                 </span>
                 <button
                     onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}

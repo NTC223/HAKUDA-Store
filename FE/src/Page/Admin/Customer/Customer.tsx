@@ -13,13 +13,6 @@ interface Customer {
     createdAt: string;
 }
 
-interface PaginationInfo {
-    page: number;
-    pageSize: number;
-    total: number;
-    totalPages: number;
-}
-
 const pageSize = 10;
 
 export default function Customer() {
@@ -27,10 +20,11 @@ export default function Customer() {
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [sortBy, setSortBy] = useState('name');
-    const [sortOrder, setSortOrder] = useState('asc');
-    const [totalProducts, setTotalProducts] = useState(0);
+    const [sortBy, setSortBy] = useState('createdAt');
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
     const [totalPages, setTotalPages] = useState(0);
+    const [searchInput, setSearchInput] = useState('');
+    const [search, setSearch] = useState('');
 
     const fetchCustomers = async () => {
         try {
@@ -41,16 +35,15 @@ export default function Customer() {
                     pageSize: pageSize,
                     sortBy,
                     sortOrder,
+                    query: search,
                 },
             });
             const { users, pagination } = response.data.result;
             setCustomers(users);
-            setTotalProducts(pagination.total);
             setTotalPages(pagination.totalPages);
         } catch (err: any) {
             setError('Không thể tải danh sách khách hàng');
             setCustomers([]);
-            console.error('Error fetching customers:', err);
         } finally {
             setLoading(false);
         }
@@ -58,7 +51,7 @@ export default function Customer() {
 
     useEffect(() => {
         fetchCustomers();
-    }, [currentPage, sortBy, sortOrder]);
+    }, [currentPage, sortBy, sortOrder, search]);
 
     const handleDelete = async (id: string) => {
         if (window.confirm('Bạn có chắc chắn muốn xóa người dùng này?')) {
@@ -67,17 +60,12 @@ export default function Customer() {
                 toast.success('Xóa người dùng thành công!', {
                     position: 'top-right',
                     autoClose: 1000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
                 });
                 setTimeout(() => {
                     fetchCustomers();
                 }, 1000);
             } catch (err: any) {
                 toast.error(err.response?.data?.message || 'Không thể xóa người dùng');
-                console.error('Error deleting user:', err);
             }
         }
     };
@@ -88,23 +76,29 @@ export default function Customer() {
             toast.success('Cập nhật quyền thành công!', {
                 position: 'top-right',
                 autoClose: 1000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
             });
             setTimeout(() => {
                 fetchCustomers();
             }, 1000);
         } catch (err: any) {
             toast.error(err.response?.data?.message || 'Không thể cập nhật quyền');
-            console.error('Error updating role:', err);
         }
     };
 
-    useEffect(() => {
-        window.scroll(0, 0);
-    }, [currentPage]);
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        setSearch(searchInput);
+        setCurrentPage(1);
+    };
+
+    const handleSort = (field: string) => {
+        if (sortBy === field) {
+            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortBy(field);
+            setSortOrder('asc');
+        }
+    };
 
     if (loading) {
         return <div>Đang tải...</div>;
@@ -115,118 +109,78 @@ export default function Customer() {
     }
 
     return (
-        <div className={styles.content}>
+        <div className={styles.customerPage}>
             <ToastContainer />
-            <div className={styles.title}>Danh sách người dùng</div>
+            <div className={styles.pageHeader}>
+                <h1>Quản lý người dùng</h1>
+            </div>
 
-            <div className={styles.dashBoard}>
-                <div className={styles.filterOptions}>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setSortBy('name');
-                            setSortOrder('asc');
-                        }}
-                    >
-                        Tên A - Z
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setSortBy('name');
-                            setSortOrder('desc');
-                        }}
-                    >
-                        Tên Z - A
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setSortBy('createdAt');
-                            setSortOrder('desc');
-                        }}
-                    >
-                        Mới nhất
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => {
-                            setSortBy('createdAt');
-                            setSortOrder('asc');
-                        }}
-                    >
-                        Cũ nhất
-                    </button>
-                </div>
+            <form className={styles.searchBar} onSubmit={handleSearch}>
+                <input
+                    type="text"
+                    placeholder="Tìm kiếm người dùng..."
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    style={{ maxWidth: 200 }}
+                />
+                <button type="submit">Tìm kiếm</button>
+            </form>
 
-                <table>
+            <div className={styles.tableWrap}>
+                <table className={styles.customerTable}>
                     <thead>
                         <tr>
-                            <th style={{ width: '5%' }}>STT</th>
-                            <th style={{ width: '15%' }}>Ngày tạo</th>
-                            <th style={{ width: '15%' }}>Tên</th>
-                            <th style={{ width: '25%' }}>Email</th>
-                            <th style={{ width: '12%' }}>Số điện thoại</th>
-                            <th style={{ width: '15%' }}>Quyền</th>
-                            <th style={{ width: '13%' }}>Thao tác</th>
+                            <th onClick={() => handleSort('createdAt')} style={{ cursor: 'pointer' }}>
+                                Ngày tạo {sortBy === 'createdAt' && (sortOrder === 'asc' ? '↑' : '↓')}
+                            </th>
+                            <th onClick={() => handleSort('name')} style={{ cursor: 'pointer' }}>
+                                Tên {sortBy === 'name' && (sortOrder === 'asc' ? '↑' : '↓')}
+                            </th>
+                            <th>Email</th>
+                            <th>Số điện thoại</th>
+                            <th>Quyền</th>
+                            <th>Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {customers.map((item, index) => (
-                            <tr key={item._id} style={{ verticalAlign: 'middle' }}>
-                                <td style={{ textAlign: 'center' }}>{(currentPage - 1) * pageSize + index + 1}</td>
-                                <td>{new Date(item.createdAt).toLocaleString('vi-VN')}</td>
-                                <td
-                                    style={{
-                                        maxWidth: '200px',
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis',
-                                        whiteSpace: 'nowrap',
-                                    }}
-                                >
-                                    {item.name}
-                                </td>
-                                <td
-                                    style={{
-                                        maxWidth: '300px',
-                                        overflow: 'hidden',
-                                        textOverflow: 'ellipsis',
-                                        whiteSpace: 'nowrap',
-                                    }}
-                                >
-                                    {item.email}
-                                </td>
+                        {customers.map((item) => (
+                            <tr key={item._id}>
+                                <td>{new Date(item.createdAt).toLocaleDateString('vi-VN')}</td>
+                                <td>{item.name}</td>
+                                <td>{item.email}</td>
                                 <td>{item.phone}</td>
                                 <td>
+                                    <span
+                                        className={
+                                            item.role === 'admin'
+                                                ? `${styles.roleBadge} ${styles.roleBadgeAdmin}`
+                                                : styles.roleBadge
+                                        }
+                                    >
+                                        {item.role === 'admin' ? 'Admin' : 'Người dùng'}
+                                    </span>
                                     <select
                                         value={item.role}
                                         onChange={(e) => handleRoleChange(item._id, e.target.value)}
                                         style={{
                                             padding: '4px 8px',
-                                            borderRadius: '4px',
+                                            borderRadius: '6px',
                                             border: '1px solid #ddd',
                                             width: '100%',
+                                            marginTop: 6,
+                                            background: '#f8fafd',
+                                            fontWeight: 600,
                                         }}
                                     >
                                         <option value="user">Người dùng</option>
                                         <option value="admin">Admin</option>
                                     </select>
                                 </td>
-                                <td>
-                                    <button
-                                        onClick={() => handleDelete(item._id)}
-                                        style={{
-                                            padding: '4px 8px',
-                                            backgroundColor: '#d32f2f',
-                                            color: 'white',
-                                            border: 'none',
-                                            borderRadius: '4px',
-                                            cursor: 'pointer',
-                                            fontSize: '13px',
-                                            width: '100%',
-                                        }}
-                                    >
-                                        Xóa
+                                <td style={{ textAlign: 'center' }}>
+                                    <button className={styles.actionBtn} onClick={() => handleDelete(item._id)}>
+                                        <span role="img" aria-label="delete">
+                                            🗑️
+                                        </span>
                                     </button>
                                 </td>
                             </tr>
@@ -234,13 +188,13 @@ export default function Customer() {
                     </tbody>
                 </table>
             </div>
-            <div style={{ textAlign: 'right', paddingRight: 20 }}>
+
+            <div className={styles.pagination}>
                 <button onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))} disabled={currentPage === 1}>
                     ← Trang trước
                 </button>
-                <span>
-                    {' '}
-                    Trang {currentPage} / {totalPages}{' '}
+                <span style={{ margin: '0 12px' }}>
+                    Trang {currentPage} / {totalPages}
                 </span>
                 <button
                     onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
