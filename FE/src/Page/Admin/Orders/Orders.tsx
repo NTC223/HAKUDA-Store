@@ -51,6 +51,7 @@ export default function Orders() {
     const [searchInput, setSearchInput] = useState('');
     const [search, setSearch] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
     const pageSize = 10;
 
     useEffect(() => {
@@ -63,6 +64,8 @@ export default function Orders() {
                         pageSize: pageSize,
                         query: search,
                         status: statusFilter,
+                        sortBy: 'createdAt',
+                        sortOrder: sortOrder,
                     },
                 });
                 const ordersData = response.data.result.orders;
@@ -81,7 +84,7 @@ export default function Orders() {
         };
         fetchOrders();
         // eslint-disable-next-line
-    }, [currentPage, search, statusFilter]);
+    }, [currentPage, search, statusFilter, sortOrder]);
 
     const fetchProductDetails = async (productId: string) => {
         if (products[productId]) return;
@@ -209,7 +212,15 @@ export default function Orders() {
                 <table className={styles.productTable}>
                     <thead>
                         <tr>
-                            <th style={{ width: '10%' }}>Ngày tạo</th>
+                            <th
+                                style={{ width: '10%', cursor: 'pointer' }}
+                                onClick={() => {
+                                    setSortOrder((prev) => (prev === 'asc' ? 'desc' : 'asc'));
+                                    setCurrentPage(1);
+                                }}
+                            >
+                                Ngày tạo {sortOrder === 'asc' ? '↑' : '↓'}
+                            </th>
                             <th style={{ width: '20%' }}>Khách hàng</th>
                             <th>Địa chỉ</th>
                             <th style={{ width: '12%' }}>Tổng tiền</th>
@@ -321,8 +332,8 @@ export default function Orders() {
                             <tr>
                                 <td colSpan={6}>
                                     <p>Không có đơn hàng nào.</p>
-                                    </td>
-                                </tr>
+                                </td>
+                            </tr>
                         )}
                     </tbody>
                 </table>

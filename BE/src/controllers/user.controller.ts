@@ -70,7 +70,10 @@ export const deleteUserController = async (req: Request, res: Response) => {
 export const getAllUsersController = async (req: Request, res: Response) => {
     const page = Number(req.query.page) || 1
     const pageSize = Number(req.query.pageSize) || 10
-    const result = await usersService.getAllUsers(page, pageSize)
+    const sortBy = (req.query.sortBy as string) || 'createdAt'
+    const sortOrder = (req.query.sortOrder as string) || 'desc'
+    const query = (req.query.query as string) || ''
+    const result = await usersService.getAllUsers(page, pageSize, sortBy, sortOrder, query)
     res.json({
         message: 'Users fetched successfully',
         result

@@ -131,11 +131,23 @@ class UsersService {
         )
     }
 
-    async getAllUsers(page: number = 1, pageSize: number = 10) {
+    async getAllUsers(
+        page: number = 1,
+        pageSize: number = 10,
+        sortBy: string = 'createdAt',
+        sortOrder: string = 'desc',
+        query: string = ''
+    ) {
         const skip = (page - 1) * pageSize
+        const filter: any = {}
+        if (query) {
+            filter.name = { $regex: query, $options: 'i' }
+        }
+        const sortOptions: { [key: string]: 1 | -1 } = {}
+        sortOptions[sortBy] = sortOrder === 'asc' ? 1 : -1
         const [users, total] = await Promise.all([
-            databaseService.users.find({}).skip(skip).limit(pageSize).toArray(),
-            databaseService.users.countDocuments({})
+            databaseService.users.find(filter).sort(sortOptions).skip(skip).limit(pageSize).toArray(),
+            databaseService.users.countDocuments(filter)
         ])
         return {
             users,

@@ -70,7 +70,14 @@ class OrderService {
         return order
     }
 
-    async getOrderList(page: number = 1, pageSize: number = 10, query: string = '', status: string = '') {
+    async getOrderList(
+        page: number = 1,
+        pageSize: number = 10,
+        query: string = '',
+        status: string = '',
+        sortBy: string = 'createdAt',
+        sortOrder: string = 'desc'
+    ) {
         const skip = (page - 1) * pageSize
         const filter: any = {}
         if (query) {
@@ -79,8 +86,10 @@ class OrderService {
         if (status) {
             filter.status = status
         }
+        const sortOptions: { [key: string]: 1 | -1 } = {}
+        sortOptions[sortBy] = sortOrder === 'asc' ? 1 : -1
         const [orders, total] = await Promise.all([
-            databaseService.orders.find(filter).skip(skip).limit(pageSize).toArray(),
+            databaseService.orders.find(filter).sort(sortOptions).skip(skip).limit(pageSize).toArray(),
             databaseService.orders.countDocuments(filter)
         ])
         return {

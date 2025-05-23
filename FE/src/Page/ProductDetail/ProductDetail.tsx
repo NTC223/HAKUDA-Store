@@ -200,11 +200,11 @@ export default function ProductDetail() {
                                                                     className={styles.btnBuy}
                                                                     style={{ marginTop: 15, display: 'flex' }}
                                                                 >
-                                                                    <button type="button" className={styles.buyNow}>
+                                                                    {/* <button type="button" className={styles.buyNow}>
                                                                         <Link to="/payment" className={styles.buyNow}>
                                                                             MUA NGAY
                                                                         </Link>
-                                                                    </button>
+                                                                    </button> */}
                                                                     <button
                                                                         type="button"
                                                                         className={styles.addToCart}

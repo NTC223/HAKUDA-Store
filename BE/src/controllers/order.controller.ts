@@ -16,7 +16,9 @@ export const getOrderListController = async (req: Request, res: Response) => {
     const pageSize = Number(req.query.pageSize) || 10
     const query = (req.query.query as string) || ''
     const status = (req.query.status as string) || ''
-    const result = await orderService.getOrderList(page, pageSize, query, status)
+    const sortBy = (req.query.sortBy as string) || 'createdAt'
+    const sortOrder = (req.query.sortOrder as string) || 'desc'
+    const result = await orderService.getOrderList(page, pageSize, query, status, sortBy, sortOrder)
     res.json({
         message: 'Order list fetched successfully',
         result
