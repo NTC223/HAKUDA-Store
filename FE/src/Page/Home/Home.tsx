@@ -43,6 +43,8 @@ interface Product {
     _id: string;
     name: string;
     price: number;
+    original_price?: number;
+    discount_percent?: number;
     image: string;
 }
 
@@ -285,6 +287,8 @@ export default function Home() {
                                     _id: product._id,
                                     name: product.name,
                                     price: product.price.toLocaleString('vi-VN') + '₫',
+                                    original_price: product.original_price,
+                                    discount_percent: product.discount_percent,
                                     image: product.image,
                                 }))}
                                 startIndex={0}
@@ -299,6 +303,8 @@ export default function Home() {
                                     _id: product._id,
                                     name: product.name,
                                     price: product.price.toLocaleString('vi-VN') + '₫',
+                                    original_price: product.original_price,
+                                    discount_percent: product.discount_percent,
                                     image: product.image,
                                 }))}
                                 startIndex={0}
@@ -356,6 +362,8 @@ export default function Home() {
                                 _id: product._id,
                                 name: product.name,
                                 price: product.price.toLocaleString('vi-VN') + '₫',
+                                original_price: product.original_price,
+                                discount_percent: product.discount_percent,
                                 image: product.image,
                             }))}
                             startIndex={0}
@@ -379,7 +387,7 @@ export default function Home() {
                         <div className={styles.lefCol}>
                             <div className={styles.item}>
                                 <img src={sv2} alt="" width={45} />
-                                <h4>Tích điểm đặc quyền</h4>
+                                <h4>Giảm giá đặc biệt</h4>
                             </div>
                         </div>
                         <div className={styles.lefCol}>
@@ -391,7 +399,7 @@ export default function Home() {
                         <div className={styles.lefCol}>
                             <div className={styles.item}>
                                 <img src={sv4} alt="" width={45} />
-                                <h4>Mã giảm giá đặc quyền</h4>
+                                <h4>Miễn phí giao hàng tận nơi</h4>
                             </div>
                         </div>
                     </div>

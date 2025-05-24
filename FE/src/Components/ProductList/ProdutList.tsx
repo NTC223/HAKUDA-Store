@@ -12,6 +12,8 @@ interface productProps {
     _id: string;
     name: string;
     price: string;
+    original_price?: number;
+    discount_percent?: number;
     image: string;
 }
 
@@ -40,6 +42,8 @@ export default function ProdutList({ startIndex, endIndex, onProductCountChange,
                     key={item._id}
                     name={item.name}
                     price={item.price}
+                    originalPrice={item.original_price ? item.original_price.toLocaleString('vi-VN') + '₫' : undefined}
+                    discountPercent={item.discount_percent}
                     image={item.image}
                     path={`/product/${item._id}`}
                 />

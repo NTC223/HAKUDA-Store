@@ -190,7 +190,7 @@ export default function Form({ type }: FormProps) {
                                                 </form>
                                             </>
                                         )}
-                                        <div className={styles.socialLogin}>
+                                        {/* <div className={styles.socialLogin}>
                                             <p>
                                                 <span>Hoặc đăng nhập bằng</span>
                                             </p>
@@ -204,22 +204,22 @@ export default function Form({ type }: FormProps) {
                                         <p>
                                             Bạn quên mật khẩu bấm
                                             <Link to="/"> vào đây</Link>
-                                        </p>
+                                        </p> */}
                                     </div>
                                 </div>
                                 <div className={styles.rightCol}>
-                                    <h4>Quyền lợi với thành viên</h4>
+                                    <h4>Quyền lợi với khách hàng</h4>
                                     <div>
                                         <p>🔥Dịch vụ đóng gói riêng</p>
-                                        <p>🔥Tích điểm đặc quyền</p>
+                                        <p>🔥Giảm giá đặc biệt</p>
                                         <p>🔥Quà tặng bí mật</p>
-                                        <p>🔥Chăm sóc khách hàng 1-1</p>
-                                        <p>
+                                        <p>🔥Miễn phí giao hàng tận nơi</p>
+                                        {/* <p>
                                             👉Chi tiết hơn về chương trình hội viên, bạn có thể
                                             <Link to="/">
                                                 <span style={{ color: '#3498db' }}>xem tại đây</span>
                                             </Link>
-                                        </p>
+                                        </p> */}
                                     </div>
                                     <Link to={isLogin ? '/register' : '/login'} className={styles.registerBtn}>
                                         {isLogin ? 'Đăng ký' : 'Đăng nhập'}

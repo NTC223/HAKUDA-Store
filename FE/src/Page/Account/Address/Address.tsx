@@ -78,7 +78,7 @@ export default function Address() {
                         />
                     </fieldset>
                     <button type="submit" disabled={loading}>
-                        {loading ? 'Đang cập nhật...' : 'Cập nhật địa chỉ'}
+                        {loading ? 'Đang cập nhật...' : 'Cập nhật'}
                     </button>
                 </form>
             </div>

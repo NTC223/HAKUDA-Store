@@ -156,11 +156,30 @@
             .groupActionBtn {
                 .topGroup {
                     .priceBox {
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        margin-bottom: 10px;
+
+                        .originalPrice {
+                            color: #999;
+                            text-decoration: line-through;
+                            font-size: 16px;
+                        }
+
                         .priceProduct {
+                            color: #d70018;
                             font-size: 20px;
-                            color: var(--price);
                             font-weight: 700;
-                            margin-right: 10px;
+                        }
+
+                        .discountPercent {
+                            background: #d70018;
+                            color: #fff;
+                            padding: 2px 6px;
+                            border-radius: 4px;
+                            font-size: 14px;
+                            font-weight: 600;
                         }
                     }
                     .priceBox::after {
@@ -259,7 +278,7 @@
                             white-space: normal;
                         }
                         .addToCart {
-                            width: 180px;
+                            width: 100%;
                             line-height: 48px;
                             font-size: 16px;
                         }

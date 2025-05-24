@@ -19,6 +19,8 @@ interface Product {
     _id: string;
     name: string;
     price: number;
+    original_price: number;
+    discount_percent: number;
     images: string[];
     category: string;
     maker: string;
@@ -156,20 +158,38 @@ export default function ProductDetail() {
                                                     <div style={{ fontSize: 14, lineHeight: 1.3, fontWeight: 400 }}>
                                                         Mã sản phẩm:
                                                         <strong style={{ fontWeight: 400 }}> {product._id}</strong>
-                                                    </div>     
+                                                    </div>
                                                 </div>
                                                 <div className={styles.vendorGroup}>
                                                     <div className={styles.vendor}>
                                                         <span>Số lượng còn lại: </span>
                                                         {product.count_in_stock}
-                                                    </div>   
+                                                    </div>
                                                 </div>
                                                 <div className={styles.groupActionBtn}>
                                                     <div className={styles.topGroup}>
                                                         <div className={styles.priceBox}>
-                                                            <div className={styles.priceProduct}>
-                                                                {product.price.toLocaleString('vi-VN')}₫
-                                                            </div>
+                                                            {product.original_price &&
+                                                            product.original_price > product.price ? (
+                                                                <>
+                                                                    <div className={styles.originalPrice}>
+                                                                        {product.original_price.toLocaleString('vi-VN')}
+                                                                        ₫
+                                                                    </div>
+                                                                    <div className={styles.priceProduct}>
+                                                                        {product.price.toLocaleString('vi-VN')}₫
+                                                                    </div>
+                                                                    {product.discount_percent > 0 && (
+                                                                        <div className={styles.discountPercent}>
+                                                                            -{product.discount_percent}%
+                                                                        </div>
+                                                                    )}
+                                                                </>
+                                                            ) : (
+                                                                <div className={styles.priceProduct}>
+                                                                    {product.price.toLocaleString('vi-VN')}₫
+                                                                </div>
+                                                            )}
                                                         </div>
                                                         {/* <div className={styles.coupon}>
                                                             <div className={styles.listCoupon}>
@@ -241,7 +261,9 @@ export default function ProductDetail() {
                                                 <h3 className={styles.productName}>
                                                     <span>Thông tin chi tiết sản phẩm</span>
                                                 </h3>
-                                                <p style={{ marginTop: 0 }}>{product.description}</p>
+                                                <div className={styles.description} style={{ whiteSpace: 'pre-line' }}>
+                                                    {product.description}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -440,7 +462,7 @@ export default function ProductDetail() {
                             <div className={styles.fixPage}>
                                 <div style={{ background: '#fff', overflow: 'hidden', clear: 'both' }}>
                                     <div className={styles.blockTitle}>
-                                        <h2 className={styles.title}>ưu đãi thành viên</h2>
+                                        <h2 className={styles.title}>ưu đãi khách hàng</h2>
                                     </div>
                                     <div className={styles.benefitItem}>
                                         <div className={styles.image}>
@@ -452,10 +474,15 @@ export default function ProductDetail() {
                                     </div>
                                     <div className={styles.benefitItem}>
                                         <div className={styles.image}>
-                                            <img src={sv2} alt="Tích điểm đặc quyền" width={40} height={40} />
+                                            <img
+                                                src={sv2}
+                                                alt="Chương trình giảm giá đặc biệt"
+                                                width={40}
+                                                height={40}
+                                            />
                                         </div>
                                         <div className={styles.contentsv}>
-                                            <h4>Tích điểm đặc quyền</h4>
+                                            <h4>Chương trình giảm giá đặc biệt</h4>
                                         </div>
                                     </div>
                                     <div className={styles.benefitItem}>
@@ -468,10 +495,10 @@ export default function ProductDetail() {
                                     </div>
                                     <div className={styles.benefitItem}>
                                         <div className={styles.image}>
-                                            <img src={sv4} alt="Mã giảm giá đặc quyền" width={40} height={40} />
+                                            <img src={sv4} alt="Miễn phí giao hàng tận nơi" width={40} height={40} />
                                         </div>
                                         <div className={styles.contentsv}>
-                                            <h4>Mã giảm giá đặc quyền</h4>
+                                            <h4>Miễn phí giao hàng tận nơi</h4>
                                         </div>
                                     </div>
                                 </div>

@@ -47,9 +47,7 @@ export default function Account() {
                         <div className={styles.lefCol}>
                             <div className={styles.blockAccount}>
                                 <h5 className={styles.titleAccount}>Trang tài khoản</h5>
-                                <p>
-                                    Xin chào, <span style={{ color: '#151614' }}>Nguyễn Thành Công </span> !
-                                </p>
+                                <p>{/* Xin chào, <span style={{ color: '#151614' }}>Nguyễn Thành Công </span> ! */}</p>
                                 <ul>
                                     {navList.map((item, index) => {
                                         return (

@@ -126,7 +126,7 @@ export default function Orders() {
                             <th>Tổng tiền</th>
                             <th>Trạng thái</th>
                             <th>Thanh toán</th>
-                            <th>Thao tác</th>
+                            {/* <th>Thao tác</th> */}
                         </tr>
                     </thead>
                     <tbody>
@@ -139,7 +139,7 @@ export default function Orders() {
                                         <td>{order.total_amount.toLocaleString('vi-VN')}₫</td>
                                         <td>{getStatusText(order.status)}</td>
                                         <td>{getPaymentStatusText(order.payment_status)}</td>
-                                        <td>
+                                        {/* <td>
                                             {order.payment_status === 'unpaid' && (
                                                 <button
                                                     onClick={(e) => {
@@ -151,7 +151,7 @@ export default function Orders() {
                                                     Thanh toán
                                                 </button>
                                             )}
-                                        </td>
+                                        </td> */}
                                     </tr>
                                     {selectedOrder?._id === order._id && (
                                         <tr className={styles.detailRow}>
